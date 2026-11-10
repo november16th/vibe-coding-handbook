@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 
-export function PromptBox({ text }) {
+export function PromptBox({ text, label = 'AI에게 이렇게 말해보세요', tone }) {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
     try {
@@ -13,9 +13,9 @@ export function PromptBox({ text }) {
     setTimeout(() => setCopied(false), 1400)
   }
   return (
-    <div className="prompt">
+    <div className={'prompt' + (tone ? ' ' + tone : '')}>
       <div className="prompt-head">
-        <span className="eyebrow">AI에게 이렇게 말해보세요</span>
+        <span className="eyebrow">{label}</span>
         <button className="btn small" onClick={copy}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.span key={copied ? 'y' : 'n'} initial={{ y: 6, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -6, opacity: 0 }} transition={{ duration: 0.15 }}>

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Detail from './pages/Detail'
+import Tutorial from './pages/Tutorial'
 import './styles.css'
 
 // "/#section" 으로 돌아왔을 때 해당 섹션으로 이동
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Home /> },
       { path: '/term/:id', element: <Detail /> },
+      { path: '/tutorial/:step', element: <Tutorial /> },
     ],
   },
 ])

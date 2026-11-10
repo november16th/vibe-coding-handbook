@@ -34,7 +34,7 @@ button { font-family: inherit; }
   border-bottom: 1px solid var(--line);
 }
 .topbar-in { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
-.logo { justify-self: start; color: var(--acc); font-size: 22px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+.logo { justify-self: start; color: var(--acc); font-size: 25px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
 .group-tabs { display: flex; background: #efece5; padding: 4px; border-radius: 99px; }
 .group-tabs a { position: relative; padding: 8px 16px; border-radius: 99px; font-size: 14px; font-weight: 700; color: var(--muted); white-space: nowrap; transition: color 0.2s; }
 .group-tabs a.on { color: #fff; }
@@ -57,8 +57,9 @@ button { font-family: inherit; }
 
 .group { padding-top: 48px; }
 .group:first-child { padding-top: 36px; }
-.site-intro { margin: 0; padding-top: 28px; font-size: 15.5px; line-height: 1.7; color: var(--muted); text-wrap: pretty; word-break: keep-all; }
-.site-intro + .group { padding-top: 20px; }
+.site-tagline { max-width: 1200px; margin: 0 auto; padding: 0 20px 10px; font-size: 15.5px; line-height: 1.7; color: var(--muted); text-wrap: pretty; word-break: keep-all; }
+.site-intro { display: none; margin: 0; padding-top: 28px; font-size: 15.5px; line-height: 1.7; color: var(--muted); text-wrap: pretty; word-break: keep-all; }
+.site-intro + .group { padding-top: 36px; }
 .group-head h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.035em; margin: 0; }
 .group-head h2 span { color: var(--acc); font-size: 20px; }
 .group-head p { color: var(--muted); font-size: 15px; margin: 8px 0 0; line-height: 1.6; }
@@ -1174,6 +1175,9 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 @media (max-width: 640px) {
   .topbar-in { padding: 10px 16px; }
   .topbar-in:has(.group-tabs) .logo { display: none; }
+  .site-intro { display: block; }
+  .site-tagline { display: none; }
+  .site-intro + .group { padding-top: 20px; }
   .search { justify-self: stretch; max-width: none; height: 36px; }
   .topbar-in { grid-template-columns: 1fr; justify-items: center; }
   .group-tabs a { padding: 7px 10px; font-size: 12.5px; }
@@ -1645,3 +1649,34 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .ie-d-btn { width: 54px; height: 14px; border-radius: 99px; background: #1f1f24; opacity: 0.85; }
 .ie-d-cursor { position: absolute; left: 0; top: 0; z-index: 2; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2)); }
 .ie-d-copied { position: absolute; left: 50%; bottom: 10px; translate: -50% 0; font-size: 8.5px; color: #2a6fd6; border-color: #cfe1ff; background: #f3f8ff; }
+
+/* ───────── 튜토리얼 ───────── */
+.prompt.calm { background: #f3f6fb; border-color: #dbe4f2; }
+.prompt.calm .eyebrow { color: #4a6fa8; }
+.road-line { position: absolute; left: 36px; right: 24px; top: 112px; height: 4px; border-radius: 99px; background: #e2ded5; }
+.road-fill { position: absolute; left: 36px; top: 112px; height: 4px; border-radius: 99px; background: var(--acc); }
+.road-stop { position: absolute; top: 104px; width: 12px; display: grid; justify-items: center; gap: 8px; }
+.road-stop span { display: block; width: 20px; height: 20px; border-radius: 99px; border: 2.5px solid; }
+.road-stop em { font-style: normal; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.tut-bar { display: flex; gap: 4px; margin: 12px 0 18px; max-width: 520px; }
+.tut-bar i { flex: 1; height: 6px; border-radius: 99px; background: #e7e3da; }
+.tut-bar i.on { background: var(--acc); }
+.tut-lead { background: #fff; border: 1px solid #ffdcc8; border-left: 4px solid var(--acc); border-radius: 16px; padding: 16px 20px; margin-bottom: 26px; display: grid; gap: 6px; }
+.tut-lead p { margin: 0; font-size: 17px; line-height: 1.8; color: #2f2d29; text-wrap: pretty; word-break: keep-all; }
+.tut-todo { margin: 0 0 16px; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: todo; }
+.tut-todo li { counter-increment: todo; display: flex; gap: 10px; align-items: baseline; font-size: 16px; line-height: 1.6; }
+.tut-todo li::before { content: counter(todo); flex-shrink: 0; width: 22px; height: 22px; border-radius: 99px; background: var(--acc-soft); color: var(--acc); font-size: 12px; font-weight: 800; display: grid; place-items: center; transform: translateY(2px); }
+.tut-prompts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tut-done { margin-top: 32px; display: grid; gap: 4px; padding: 20px 22px; border-radius: 22px; background: #dff6ee; color: #146b55; font-size: 15.5px; }
+.tut-done b { font-size: 18px; }
+.tut-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.tut-prev { font-size: 15px; font-weight: 700; color: var(--muted); padding: 12px 4px; }
+.tut-prev:hover { color: var(--ink); }
+.tut-next { height: 52px; padding: 0 28px; font-size: 16px; }
+@media (max-width: 860px) {
+  .tut-prompts { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .tut-lead p { font-size: 16px; }
+  .tut-next { height: 48px; padding: 0 18px; font-size: 14.5px; }
+}
