@@ -86,7 +86,7 @@ export default function Tutorial() {
               {lesson.todo && (
                 <ul className="tut-todo">
                   {lesson.todo.map((t) => (
-                    <li key={t}>{t}</li>
+                    <li key={t}>{rich(t)}</li>
                   ))}
                 </ul>
               )}
