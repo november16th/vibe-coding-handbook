@@ -36,6 +36,17 @@ export default function Tutorial() {
           <Link to="/#tutorial" className="back">
             ← 전체 용어
           </Link>
+          {tut.prev && n === 1 && (
+            <div className="tut-prev-course">
+              <p>
+                <b>🔗 이어지는 코스예요</b>
+                {tut.prev}
+              </p>
+              <Link to={`/tutorial/${c - 1}/1`} className="btn">
+                {TUTORIALS[c - 2].title} 시작하기 →
+              </Link>
+            </div>
+          )}
           <p className="tut-lead">{lesson.lead}</p>
 
           {hasTask && (
@@ -58,8 +69,8 @@ export default function Tutorial() {
                 </div>
               )}
               <div className="tut-prompts">
-                {lesson.prompt && <PromptBox text={lesson.prompt} label="AI에게 이렇게 보내보세요" />}
-                {lesson.stuck && <PromptBox text={lesson.stuck} label="막혔을 때는 이렇게 물어보세요" tone="calm" />}
+                {lesson.prompt && <PromptBox text={lesson.prompt} label="👍 AI에게 이렇게 보내보세요" tone="go" />}
+                {lesson.stuck && <PromptBox text={lesson.stuck} label="🆘 막혔을 때는 이렇게 물어보세요" tone="stuck" />}
               </div>
             </section>
           )}
@@ -84,7 +95,7 @@ export default function Tutorial() {
 
         {last && (
           <div className="tut-done">
-            <b>{tut.title} 완료!</b>
+            <b>💯 {tut.title} 완료!</b>
             <span>{tut.finish}</span>
           </div>
         )}

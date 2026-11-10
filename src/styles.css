@@ -1651,8 +1651,13 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .ie-d-copied { position: absolute; left: 50%; bottom: 10px; translate: -50% 0; font-size: 8.5px; color: #2a6fd6; border-color: #cfe1ff; background: #f3f8ff; }
 
 /* ───────── 튜토리얼 ───────── */
-.prompt.calm { background: #f3f6fb; border-color: #dbe4f2; }
-.prompt.calm .eyebrow { color: #4a6fa8; }
+.prompt.go { background: #ecf9f3; border-color: #bfe9d6; }
+.prompt.go .eyebrow { color: #158a6c; }
+.prompt.stuck { background: #fff1f0; border-color: #ffd0cc; }
+.prompt.stuck .eyebrow { color: #d4302f; }
+.tut-prev-course { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 24px; padding: 16px 20px; border-radius: 18px; background: #f3f0ea; }
+.tut-prev-course p { margin: 0; flex: 1; min-width: 240px; display: grid; gap: 4px; font-size: 15.5px; line-height: 1.7; color: #45423c; word-break: keep-all; }
+.tut-prev-course b { font-size: 16px; color: var(--ink); }
 .road-line { position: absolute; left: 36px; right: 24px; top: 112px; height: 4px; border-radius: 99px; background: #e2ded5; }
 .road-fill { position: absolute; left: 36px; top: 112px; height: 4px; border-radius: 99px; background: var(--acc); }
 .road-stop { position: absolute; top: 104px; width: 12px; display: grid; justify-items: center; gap: 8px; }
