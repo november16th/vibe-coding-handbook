@@ -4,6 +4,8 @@ import * as M from './demos/motion'
 import * as D from './demos/dev'
 import * as D2 from './demos/dev2'
 import * as A from './demos/ai'
+import * as DS from './demos/design'
+import * as X from './demos/more'
 import { DESC } from './descriptions'
 import { PLAYGROUNDS } from './playgrounds'
 
@@ -57,6 +59,8 @@ export const GROUPS = [
           t('placeholder', 'Placeholder', '비어 있을 때 안내 문구', B.Placeholder, '이름 입력 칸에 "이름을 입력하세요" 플레이스홀더를 넣어줘. 연한 회색으로.', { aka: ['플레이스홀더', '안내 문구', '힌트 텍스트'] }),
           t('select', 'Select', '목록에서 고르는 칸', B.Select, '주소 입력 폼에 지역 선택(select)을 넣어줘. 서울/부산/대구/광주 중 하나, 기본값은 "선택해주세요".', { aka: ['셀렉트', '셀렉트 박스', '선택 상자', '콤보박스'] }),
           t('search-bar', 'Search Bar', '검색창', B.SearchBar, '상단에 둥근 검색창을 만들어줘. 왼쪽에 돋보기 아이콘, 입력하는 동안 아래에 추천 검색어를 보여주고 일치하는 글자는 굵게.', { aka: ['검색창', '서치바', '자동완성', 'Autocomplete'] }),
+          t('form-validation', 'Form Validation', '입력값 검사', DS.FormValidation, '회원가입 폼에 입력값 검사를 넣어줘. 빈 칸이 있거나 이메일 형식이 틀리면 가입 버튼을 눌렀을 때 그 칸을 빨갛게 표시하고 아래에 이유를 알려줘.', { aka: ['폼 검증', '유효성 검사', '입력 검사', 'validation', '필수 항목', '에러 메시지'] }),
+          t('file-upload', 'File Upload', '파일 올리기', DS.FileUpload, '사진을 올리는 칸을 만들어줘. 끌어다 놓거나 눌러서 고를 수 있고, 올리는 동안 진행률 막대, 다 올리면 미리보기를 보여줘. 이미지만, 최대 5MB까지.', { aka: ['파일 업로드', '업로드', '드롭존', 'Dropzone', '사진 올리기', '첨부'] }),
         ],
       },
       {
@@ -118,6 +122,47 @@ export const GROUPS = [
     ],
   },
   {
+    id: 'design',
+    short: '디자인',
+    title: '디자인 기초',
+    intro: 'UI가 화면 부품의 이름이라면, 여기는 그 부품을 다듬는 재료의 이름이에요. "좀 더 여유 있게", "더 예쁘게"를 정확한 말로 바꿔줘요.',
+    sections: [
+      {
+        id: 'design-material',
+        title: '디자인 재료',
+        en: 'Material',
+        items: [
+          t('padding-margin', 'Padding / Margin', '안쪽 여백 vs 바깥 간격', DS.PaddingMargin, '카드 안쪽 여백(padding)은 24px, 카드끼리 간격(margin)은 16px로 넉넉하게 바꿔줘. 모바일에서는 둘 다 조금 줄여서.', { aka: ['패딩', '마진', '여백', '간격', 'gap', '띄우기'] }),
+          t('color-hex', 'Color · HEX', '대표 색과 색깔 번호', DS.ColorHex, '사이트 대표 색(Primary)을 #FF6B2C로 정하고, 버튼·링크·강조 표시에 모두 이 색을 써줘. 글자는 진한 회색 #1F1F24로.', { aka: ['색상', '컬러', 'HEX', '헥스 코드', 'Primary Color', '메인 컬러', '브랜드 컬러', '색깔'] }),
+          t('typography', 'Typography', '글꼴·굵기·줄 간격', DS.Typography, '글꼴은 Pretendard로 통일하고, 제목은 굵기 800·크기 32px, 본문은 16px·줄 간격 1.7로 읽기 편하게 바꿔줘.', { aka: ['타이포그래피', '폰트', '글꼴', '글씨체', '글자 크기', '줄 간격', 'font'] }),
+          t('radius-shadow', 'Border Radius · Shadow', '둥근 모서리와 그림자', DS.RadiusShadow, '카드 모서리를 16px로 둥글게 하고, 아주 옅은 그림자를 넣어서 살짝 떠 보이게 해줘. 마우스를 올리면 그림자가 조금 진해지게.', { aka: ['라운드', '둥근 모서리', 'border-radius', '그림자', 'box-shadow', '쉐도우'] }),
+          t('icon', 'Icon', '말 대신 그림 글자', DS.IconDemo, '메뉴 이름 옆에 아이콘을 넣어줘. lucide-react 아이콘을 쓰고, 크기 20px·선 굵기 2로 통일해서.', { aka: ['아이콘', '픽토그램', 'lucide', '아이콘 라이브러리', 'SVG 아이콘'] }),
+        ],
+      },
+      {
+        id: 'design-state',
+        title: '화면 상태',
+        en: 'State',
+        items: [
+          t('interaction-states', 'Interaction States', '버튼의 여러 상태', DS.InteractionStates, '버튼의 상태를 모두 만들어줘. 마우스를 올리면(hover) 살짝 진해지고, 누르는 동안(pressed) 조금 작아지고, 키보드로 선택하면(focus) 주황 테두리, 누를 수 없을 때(disabled)는 회색으로.', { aka: ['인터랙션 상태', 'hover', 'pressed', 'active', 'focus', 'disabled', '비활성화', '상태'] }),
+          t('dark-mode', 'Dark Mode', '어두운 화면 모드', DS.DarkMode, '다크 모드를 추가해줘. 오른쪽 위 토글로 바꿀 수 있고, 처음에는 휴대폰·컴퓨터 설정을 따라가게. 고른 값은 다음에 와도 기억하게.', { aka: ['다크모드', '다크 테마', '야간 모드', '라이트 모드', '테마'] }),
+          t('breakpoint', 'Breakpoint · Viewport', '배치가 바뀌는 화면 폭', DS.Breakpoint, '화면 폭 768px과 1024px을 기준(breakpoint)으로, 모바일은 1열, 태블릿은 2열, 데스크톱은 3열로 카드가 배치되게 해줘.', { aka: ['브레이크포인트', '뷰포트', '화면 폭', '미디어 쿼리', 'media query', '반응형 기준'] }),
+          t('accessibility', 'Accessibility', '누구나 쓸 수 있게', DS.Accessibility, '접근성을 점검해서 고쳐줘. 글자와 배경의 대비를 4.5:1 이상으로, 모든 이미지에 대체 텍스트(alt)를, 버튼은 키보드로도 누를 수 있게.', { aka: ['접근성', 'a11y', '웹 접근성', '대체 텍스트', 'alt', '명도 대비', '스크린리더'] }),
+        ],
+      },
+      {
+        id: 'design-process',
+        title: '디자인 과정',
+        en: 'Process',
+        items: [
+          t('design-system', 'Design System · Token', '디자인 규칙 모음', DS.DesignSystem, '색, 글자 크기, 여백, 모서리 둥글기를 디자인 토큰(CSS 변수)으로 한곳에 모아줘. 모든 버튼과 카드가 이 토큰만 쓰게 바꿔서.', { aka: ['디자인 시스템', '디자인 토큰', '토큰', 'CSS 변수', '스타일 가이드', '컴포넌트 라이브러리'], adv: true }),
+          t('wireframe-prototype', 'Wireframe · Prototype', '뼈대 그림과 눌러보는 시안', DS.WireframePrototype, '본격적으로 만들기 전에 메인 화면 와이어프레임을 먼저 보여줘. 회색 상자로 어디에 무엇이 들어가는지만 표시해서.', { aka: ['와이어프레임', '프로토타입', '목업', 'mockup', '시안', '피그마', 'Figma'] }),
+          t('ux-ui', 'UX / UI', '쓰는 경험 vs 보이는 모양', DS.UxUi, '결제 과정을 UX 관점에서 점검해줘. 사용자가 몇 번 눌러야 끝나는지 세어보고, 단계를 줄일 수 있는 곳을 찾아서 고쳐줘.', { aka: ['UX', 'UI', '사용자 경험', '사용자 인터페이스', 'UX 디자인', 'UI 디자인'] }),
+        ],
+      },
+    ],
+  },
+  {
     id: 'motion',
     short: '애니메이션',
     title: '애니메이션 필수 용어',
@@ -165,6 +210,7 @@ export const GROUPS = [
           t('shared-element', 'Shared Element', '쭈욱', M.SharedElement, '갤러리 썸네일을 누르면 그 이미지가 그대로 커지며 상세 화면이 되는 shared element 전환을 만들어줘 (Motion layoutId 사용).', { aka: ['공유 요소 전환', 'layoutId', 'Hero 애니메이션'] }),
           t('pin-scrollytelling', 'Pin·Scrollytelling', '착착', M.PinScrollytelling, '기능 소개 섹션에 스크롤텔링을 넣어줘. 왼쪽 휴대폰 이미지는 고정(pin)되고, 스크롤할 때마다 1→2→3 단계 화면으로 바뀌게. GSAP ScrollTrigger 사용.', { aka: ['스크롤텔링', '핀', 'ScrollTrigger', '스크롤 고정'] }),
           t('horizontal-scroll', 'Horizontal Scroll', '옆으로 스르륵', M.HorizontalScroll, '포트폴리오 섹션에서 세로로 스크롤하면 카드들이 가로로 이동하는 horizontal scroll을 만들어줘. GSAP ScrollTrigger pin 사용.', { aka: ['가로 스크롤', '수평 스크롤'] }),
+          t('drag-drop', 'Drag & Drop', '끌어다 놓기', DS.DragDrop, '할 일 목록을 칸반 보드로 만들어줘. 카드를 마우스로 끌어서 "할 일"에서 "완료" 칸으로 옮길 수 있고, 끄는 동안 카드가 살짝 기울고 놓을 자리가 점선으로 보이게.', { aka: ['드래그 앤 드롭', '드래그', '끌어다 놓기', '칸반', 'Kanban', '순서 바꾸기'] }),
           t('magnetic-button', 'Magnetic Button', '착', M.MagneticButton, 'CTA 버튼에 마그네틱 효과를 넣어줘. 마우스가 80px 안으로 오면 버튼이 마우스 쪽으로 살짝 끌려오고, 벗어나면 스프링으로 제자리에 돌아가게.', { aka: ['마그네틱', '자석 버튼'] }),
           t('custom-cursor', 'Custom Cursor', '졸졸', M.CustomCursor, '기본 커서를 숨기고 작은 원형 커스텀 커서가 마우스를 부드럽게 따라오게 해줘. 이미지 위에서는 커지면서 "보기" 글자가 나오게.', { aka: ['커스텀 커서', '마우스 커서', '커서 효과'] }),
           t('3d-tilt', '3D Tilt', '갸우뚱', M.Tilt3D, '상품 카드에 3D 틸트 효과를 넣어줘. 마우스 위치에 따라 최대 12도 기울고, 빛 반사가 따라 움직이게.', { aka: ['틸트', '3D 카드', '기울기'] }),
@@ -201,6 +247,7 @@ export const GROUPS = [
           t('database', 'Database', '데이터 저장 창고', D.Database, '게시글을 새로고침해도 남아 있도록 데이터베이스에 저장해줘. Supabase를 쓰고, posts 테이블에 id, title, content, created_at 컬럼으로.', { aka: ['데이터베이스', 'DB', '디비', '테이블', 'Supabase', 'Firebase'] }),
           t('component', 'Component', '재사용하는 화면 부품', D.Component, '페이지마다 반복되는 버튼을 Button 컴포넌트로 분리해줘. 글자, 색상(primary/secondary), 크기를 props로 바꿀 수 있게.', { aka: ['컴포넌트', 'props', '프롭스', '부품'] }),
           t('state', 'State', '화면이 기억하는 값', D.State, '장바구니 개수를 state로 관리해줘. 담기 버튼을 누르면 1씩 늘고, 헤더의 장바구니 배지 숫자도 같이 바뀌게.', { aka: ['상태', '스테이트', 'useState', '상태 관리'] }),
+          t('cookie-storage', 'Cookie · Local Storage', '브라우저의 작은 기억 상자', X.CookieStorage, '장바구니 내용을 로컬 스토리지에 저장해서, 새로고침하거나 브라우저를 다시 열어도 그대로 남아 있게 해줘.', { aka: ['쿠키', '로컬 스토리지', 'localStorage', '세션', '로그인 유지', '브라우저 저장소'] }),
         ],
       },
       {
@@ -217,6 +264,7 @@ export const GROUPS = [
           t('deploy', 'Deploy', '인터넷에 공개하기', D.Deploy, '이 사이트를 Vercel에 배포하는 방법을 단계별로 알려줘. GitHub 저장소와 연결해서 push하면 자동 배포되게.', { aka: ['배포', '디플로이', '호스팅', 'Vercel', 'Netlify', '출시'] }),
           t('vercel', 'Vercel', 'GitHub 코드를 사이트로 공개해 주는 서비스', D2.Vercel, 'GitHub에 올린 이 프로젝트를 Vercel에 연결해서 배포해줘. main에 푸시할 때마다 자동으로 다시 배포되게 하고, 내가 직접 눌러야 하는 버튼은 하나씩 알려줘.', { aka: ['버셀', '호스팅', 'Netlify', '배포 서비스', 'vercel.app'] }),
           t('subdomain', 'Subdomain', '주소 앞에 붙는 내 이름', D2.Subdomain, 'Vercel 기본 주소를 my-shop.vercel.app처럼 기억하기 쉬운 이름으로 바꾸고 싶어. 어디서 바꾸는지 알려줘.', { aka: ['서브도메인', '하위 도메인', 'vercel.app 주소', '기본 주소'], adv: true }),
+          t('seo-meta', 'SEO · Meta Tag', '검색·공유 미리보기 정보', X.SeoMeta, '카톡이나 SNS에 링크를 보냈을 때 예쁜 미리보기가 뜨도록 메타 태그를 넣어줘. 제목, 한 줄 설명, 대표 이미지(og:image 1200x630)까지.', { aka: ['SEO', '검색엔진 최적화', '메타 태그', 'meta', 'OG', 'Open Graph', '링크 미리보기', '썸네일'] }),
           t('domain', 'Domain', '사이트 주소', D.Domain, '구매한 도메인 myapp.site를 Vercel에 배포한 사이트에 연결하려면 DNS 설정을 어떻게 해야 하는지 알려줘.', { aka: ['도메인', 'DNS', 'IP', 'URL', '주소', '웹 주소'] }),
         ],
       },
@@ -233,6 +281,8 @@ export const GROUPS = [
           t('merge-conflict', 'Merge Conflict', '같은 줄을 고쳐서 생긴 충돌', D2.MergeConflict, 'merge하다가 충돌(conflict)이 났어. 충돌난 파일을 보여주고, 두 수정 중 어떤 걸 살릴지 설명해준 다음 해결해줘.', { aka: ['머지 충돌', '병합 충돌', '컨플릭트', 'conflict'] }),
           t('fork', 'Fork', '남의 저장소를 내 계정으로 복사', D2.Fork, '이 오픈소스 저장소를 fork해서 내 계정에서 수정하고 싶어. fork한 다음 내 컴퓨터로 가져오는 순서를 알려줘.', { aka: ['포크', '복사', '내 계정으로 가져오기'] }),
           t('gitignore', '.gitignore', 'GitHub에 안 올릴 파일 목록', D2.Gitignore, '.gitignore 파일을 만들어줘. .env, node_modules, dist, .DS_Store는 GitHub에 올라가지 않게.', { aka: ['깃이그노어', 'gitignore', '무시 목록', '제외 파일'] }),
+          t('diff', 'Diff', '무엇이 바뀌었는지 비교', X.Diff, '방금 바꾼 내용을 diff로 보여줘. 어떤 파일의 몇째 줄이 지워지고(-) 추가됐는지(+) 쉬운 말로 요약도 해줘.', { aka: ['디프', '변경 사항', '비교', '빨간 줄 초록 줄', 'changes'] }),
+          t('revert-rollback', 'Revert / Rollback', '잘 되던 때로 되돌리기', X.RevertRollback, '마지막 수정 이후로 사이트가 깨졌어. 잘 되던 바로 전 커밋으로 되돌려줘(revert). 무엇이 되돌려지는지 먼저 알려주고 진행해.', { aka: ['되돌리기', '리버트', '롤백', '복구', '원래대로', 'undo'] }),
           t('github-actions', 'GitHub Actions', 'push하면 자동으로 돌아가는 작업', D2.GithubActions, 'main에 push할 때마다 자동으로 테스트하고 빌드하는 GitHub Actions 워크플로를 만들어줘.', { aka: ['깃허브 액션', '액션', 'CI/CD', 'CI', '워크플로', '자동화'] }),
         ],
       },
@@ -303,6 +353,9 @@ export const GROUPS = [
           t('ai-coding-tool', 'AI Coding Tool', 'AI가 들어간 코딩 프로그램', A.AiCodingTool, '이 프로젝트 구조를 먼저 훑어보고, 버튼 색을 주황색으로 바꾸는 데 어떤 파일을 고쳐야 하는지 알려준 다음 수정해줘.', { aka: ['Claude Code', '클로드 코드', 'Cursor', '커서', 'Copilot', 'AI 에디터'] }),
           t('mcp', 'MCP', 'AI에 도구를 꽂는 표준 콘센트', A.Mcp, '노션 MCP를 연결해서, 노션에 정리된 기획 문서를 읽고 그대로 화면을 만들어줘.', { aka: ['엠씨피', 'Model Context Protocol', '커넥터', '도구 연결', '플러그인'] }),
           t('rules-file', 'Rules 파일', 'AI에게 미리 주는 작업 규칙', A.RulesFile, '이 프로젝트용 CLAUDE.md를 만들어줘. 항상 한국어로 답하기, 커밋 전에 빌드 확인, 색은 주황색 계열만 쓰기 규칙을 넣어서.', { aka: ['CLAUDE.md', '.cursorrules', 'AGENTS.md', '규칙 파일', '시스템 프롬프트', '메모리'] }),
+          t('plan-mode', 'Plan Mode', '만들기 전에 계획 먼저', X.PlanMode, '바로 만들지 말고 먼저 계획부터 세워줘. 어떤 파일을 어떻게 바꿀지 순서대로 정리해서 보여주고, 내가 좋다고 하면 그때 진행해.', { aka: ['플랜 모드', '계획 모드', '계획 먼저', 'plan'] }),
+          t('multimodal', 'Multimodal', '사진으로도 말하기', X.Multimodal, '이 스크린샷 화면처럼 만들고 싶어. 화면에 어떤 부품(용어)이 있는지 먼저 이름을 알려주고, 같은 구조로 만들어줘.', { aka: ['멀티모달', '이미지 입력', '스크린샷', '사진 첨부', '이미지 인식'] }),
+          t('checkpoint', 'Checkpoint', 'AI 작업 되감기 지점', X.Checkpoint, '방금 요청한 변경이 마음에 안 들어. 그 전 체크포인트로 되감아 줘.', { aka: ['체크포인트', '되감기', 'rewind', '실행 취소', '복원 지점'] }),
         ],
       },
     ],

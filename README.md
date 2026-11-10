@@ -1,56 +1,65 @@
 # VIBE CODING HANDBOOK
 
-코딩을 몰라도 AI에게 정확히 말할 수 있도록, 바이브코딩에 자주 나오는 용어 126개를 **움직이는 카드**로 정리한 사이트입니다.
+코딩을 몰라도 AI에게 정확히 말할 수 있도록, 바이브코딩에 자주 나오는 용어 151개를 **움직이는 카드**로 정리한 사이트입니다.
 
 👉 **https://vibe-coding-handbook-xi.vercel.app/** 에서 바로 볼 수 있어요.
 
 - 카드마다 그 용어가 실제로 어떻게 생기고 움직이는지 애니메이션으로 보여줍니다.
 - 카드를 누르면 비유를 곁들인 쉬운 설명과, AI에게 그대로 복사해 쓸 수 있는 요청 문장이 나옵니다.
-- UI 용어 47개와 애니메이션 용어 27개는 값을 바꿔가며 직접 만져볼 수 있고, 바꾼 값에 맞춰 요청 문장도 함께 바뀝니다.
+- UI 용어 49개, 디자인 기초 12개, 애니메이션 용어 28개는 값을 바꿔가며 직접 만져볼 수 있고, 바꾼 값에 맞춰 요청 문장도 함께 바뀝니다.
 - JSON, API, Git 브랜치, 토큰처럼 개념을 다루는 용어 19개는 가짜 데이터로 움직이는 시뮬레이터로 체험할 수 있습니다.
+- 처음이라면 튜토리얼 코스 4개를 따라 하면서 AI로 첫 화면을 만들고, GitHub에 저장하고, Vercel로 인터넷에 공개하고, 개발자 도구로 스스로 고치는 데까지 해볼 수 있습니다.
 - 개발자 도구 2개는 실제 크롬 화면을 따라 하는 단계별 안내로 보여주고, DevTools에는 가짜 은행·증권 앱의 숫자를 콘솔로 바꿔보는 실습도 있습니다.
 - "팝업"처럼 다른 이름으로 검색해도 찾을 수 있습니다.
 
 ## 목차
 
-### UI 필수 용어 (47)
+### UI 필수 용어 (49)
 
 | 분류 | 용어 |
 | --- | --- |
 | 레이아웃 | Hero Section, Responsive Layout, Card Layout, Bento Grid, Sidebar Layout, Sticky Header, Split Layout |
 | 내비게이션 | Navigation Bar, Hamburger Menu, Bottom Navigation, Breadcrumb, Pagination, Footer |
-| 입력 | Toggle Switch, Checkbox / Radio, Text Field, Placeholder, Select, Search Bar |
+| 입력 | Toggle Switch, Checkbox / Radio, Text Field, Placeholder, Select, Search Bar, Form Validation, File Upload |
 | 버튼·행동 | CTA Button, Primary / Secondary, FAB, Pull to Refresh, Infinite Scroll |
 | 표시 | Badge, Avatar, Chip / Tag, Progress Bar, Spinner, Empty State |
 | 컴포넌트 | Tabs, Accordion, Modal / Dialog, Drawer, Dropdown, Tooltip, Toast / Snackbar, Carousel, Skeleton Loading |
 | 효과 | Hover Effect, Scroll Reveal, Stagger Animation, Smooth Transition, Glassmorphism, Parallax Scrolling, Scroll Snap, Micro-interaction |
 
-### 애니메이션 필수 용어 (27)
+### 디자인 기초 (12)
+
+| 분류 | 용어 |
+| --- | --- |
+| 디자인 재료 | Padding / Margin, Color · HEX, Typography, Border Radius · Shadow, Icon |
+| 화면 상태 | Interaction States, Dark Mode, Breakpoint · Viewport, Accessibility |
+| 디자인 과정 | Design System · Token, Wireframe · Prototype, UX / UI |
+
+### 애니메이션 필수 용어 (28)
 
 | 분류 | 용어 |
 | --- | --- |
 | 기본 | Fade, Slide, Scale, Easing, Spring, Bounce, Duration·Delay, Loop, Ripple, Shake, Pulse |
 | 글자와 그림 | Typewriter, Text Scramble, Split Text, Count-up, Line Drawing, Morphing, Marquee, Motion Path |
-| 화면과 마우스 | Page Transition, Shared Element, Pin·Scrollytelling, Horizontal Scroll, Magnetic Button, Custom Cursor, 3D Tilt, Confetti |
+| 화면과 마우스 | Page Transition, Shared Element, Pin·Scrollytelling, Horizontal Scroll, Drag & Drop, Magnetic Button, Custom Cursor, 3D Tilt, Confetti |
 
-### 개발 필수 상식 (41)
+### 개발 필수 상식 (48)
 
 | 분류 | 용어 |
 | --- | --- |
 | 파일·형식 | Markdown, README, JSON, .env, package.json |
-| 개념 | Frontend / Backend, API, Database, Component, State |
-| 도구·작업 | localhost · Port, Terminal, Commit / Push, Branch, npm install, Build, Deploy, Domain |
-| GitHub | GitHub / Repository, Clone, Pull Request, Merge Conflict, Fork, .gitignore, GitHub Actions |
+| 개념 | Frontend / Backend, API, Database, Component, State, Cookie · Local Storage |
+| 도구·작업 | localhost · Port, Terminal, Commit / Push, Branch, npm install, Build, Deploy, Vercel, Subdomain, SEO · Meta Tag, Domain |
+| GitHub | GitHub / Repository, Public / Private, Access Token, Clone, Pull Request, Merge Conflict, Fork, .gitignore, Diff, Revert / Rollback, GitHub Actions |
 | 기술 이름 | HTML / CSS / JavaScript, Library / Framework, TypeScript, Tailwind CSS, Node.js, Login / Auth, Dev / Production |
 | 문제 상황 | Cache, CORS, Bug / Debugging, Refactoring, Dependency Conflict, 404 / 500 |
 | 개발자 도구 | DevTools, Console · Error |
 
-### AI 필수 용어 (11)
+### AI 필수 용어 (14)
 
 | 분류 | 용어 |
 | --- | --- |
 | AI 기초 | LLM, Model, Prompt, Token, Context Window, Hallucination |
-| AI 도구 | Vibe Coding, AI Agent, AI Coding Tool, MCP, Rules 파일 |
+| AI 도구 | Vibe Coding, AI Agent, AI Coding Tool, MCP, Rules 파일, Plan Mode, Multimodal, Checkpoint |
 
 ## 내 컴퓨터에서 실행하기
 
