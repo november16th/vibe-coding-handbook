@@ -93,7 +93,14 @@ export const TUTORIALS = [
         chapter: '개발자 토큰 발급하기',
         lead: 'AI가 내 GitHub에 저장소를 만들고 코드를 올리려면, GitHub가 "정말 주인이 허락했나요?"를 확인할 출입증이 필요해요. 그게 개발자 토큰이에요. 개발자 토큰이 있으면 나 대신에 AI가 GitHub에 접근해서 저장소를 만들고 코드를 업로드할 수 있어요. 아직 가입하지 않았다면 github.com에서 먼저 가입해 주세요.',
         walk: [
-          { text: ['GitHub 오른쪽 위 **내 프로필 사진**을 누르고 맨 아래 **Settings**를 누르세요.'], shot: 'gh-token-1-settings.png' },
+          {
+            text: [
+              'GitHub 오른쪽 위 **내 프로필 사진**을 누르세요. 메뉴 맨 위에 보이는 영어 이름이 **내 계정 이름(사용자 이름)**이에요. 나중에 AI가 터미널로 내 GitHub에 연결할 때 필요하니 복사해 두세요.',
+              '메뉴의 **Profile**을 눌러 내 프로필로 들어가면 주소창에 **https://github.com/(계정 이름)**이 보여요. 이게 내 GitHub 주소이고, 슬래시(/) 뒤가 바로 계정 이름이에요. 앞으로 만들 저장소도 https://github.com/(계정 이름)/(저장소 이름) 모양의 주소를 갖게 돼요.',
+              '계정 이름을 확인했으면 같은 메뉴 맨 아래 **Settings**를 누르세요.',
+            ],
+            shot: 'gh-token-1-settings.png',
+          },
           { text: ['설정 화면 왼쪽 메뉴를 맨 아래까지 내려서 **Developer settings**를 누르세요.'], shot: 'gh-token-2-developer-settings.png' },
           { text: ['왼쪽에서 **Personal access tokens** → **Fine-grained tokens**를 고르고, 오른쪽 위 **Generate new token**을 누르세요.'], shot: 'gh-token-3-generate.png' },
           { text: ['**Token name**에 알아보기 쉬운 이름을 넣고, **Expiration**(만료일)을 고르세요.', '만료일은 마음대로 정할 수 있어요. 30일로 하면 30일이 지난 뒤 토큰을 새로 만들어야 하고, 반대로 아주 길게 하거나 만료 없음(No expiration)으로 하면 토큰이 새었을 때 오랫동안 악용될 수 있어 위험해요. 처음에는 **30일**을 추천해요.'], shot: 'gh-token-4-name-expiration.png' },
@@ -117,7 +124,7 @@ export const TUTORIALS = [
             shot: 'gh-token-8-copy.png',
             tip: '토큰은 비밀번호와 같아요. 다른 사람에게 보여주거나 스크린샷을 찍지 마세요. 실수로 노출됐다면 같은 화면의 Delete로 지우고 새로 만들면 돼요.',
           },
-          { text: ['마지막으로 **GitHub 사용자 이름(아이디)**도 복사해 두세요. 오른쪽 위 프로필 사진을 누르면 맨 위에 보이는 영어 이름이에요. 다음 단계에서 토큰과 함께 써요.'] },
+          { text: ['이제 처음에 복사한 **계정 이름**과 방금 복사한 **토큰**, 이 두 가지를 다음 단계에서 AI에게 연결할 때 써요.'] },
         ],
         stuck: '개발자 토큰을 만드는 화면에서 어디를 눌러야 할지 모르겠어요. 지금 화면을 스크린샷 찍어서 붙여넣을게요. 토큰 값은 가렸어요. 다음에 무엇을 누르면 되는지 알려주세요.',
       },
