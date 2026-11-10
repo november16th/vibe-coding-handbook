@@ -1712,6 +1712,8 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .tut-walk-body .tut-walk-tip { font-size: 14px; color: var(--muted); background: var(--demo); border-radius: 12px; padding: 9px 13px; }
 .tut-walk-img { display: block; max-width: 720px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; cursor: zoom-in; }
 .tut-walk-img img { display: block; width: 100%; height: auto; }
+.tut-intro { margin: 0 0 28px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.tut-intro .tut-lead { margin-bottom: 18px; }
 
 /* ───────── 디자인 기초 · 추가 용어 데모 ───────── */
 .pm-gap { display: block; height: 70px; border-radius: 6px; }
