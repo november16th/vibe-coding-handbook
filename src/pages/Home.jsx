@@ -100,6 +100,7 @@ export default function Home() {
       </header>
 
       <main className="wrap">
+        {!hits && <p className="site-intro">바이브코딩하다 모르는 말이 나오면 찾아보는 용어 사전이에요. 움직이는 카드로 보고, AI에게 할 말까지 복사해 가세요.</p>}
         {hits ? (
           <section className="group">
             <div className="group-head">
