@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { GROUPS, searchTerms } from '../terms'
 import { Stage, Icon, TutorialDemo } from '../demos/parts'
-import { TUTORIAL, readTutorialStep } from '../tutorial'
+import { TUTORIALS } from '../tutorial'
 
 export function TermCard({ term, alias }) {
   const { Demo } = term
@@ -24,30 +24,37 @@ export function TermCard({ term, alias }) {
   )
 }
 
-// 튜토리얼 진입 카드. 하던 게 있으면 그 단계부터 이어서.
+// 튜토리얼 코스 카드
+function TutorialCard({ tut, course }) {
+  return (
+    <Link to={`/tutorial/${course}/1`} className="card">
+      <Stage>
+        <TutorialDemo road={tut.road} title={tut.subtitle} />
+      </Stage>
+      <div className="card-body">
+        <div className="card-title">
+          <h4>{tut.title}</h4>
+        </div>
+        <p>
+          {tut.subtitle} · {tut.steps.length}단계
+        </p>
+      </div>
+      <span className="card-no mono">{String(course).padStart(2, '0')}</span>
+    </Link>
+  )
+}
+
 function TutorialSection() {
-  const reached = readTutorialStep()
-  const total = TUTORIAL.length
-  const finished = reached >= total
   return (
     <section id="tutorial" className="group">
       <div className="group-head">
         <h2>튜토리얼</h2>
-        <p>코딩을 처음 해본다면 여기서 시작하세요. 용어를 하나씩 순서대로 배우면서 내 홈페이지를 인터넷에 올리는 데까지 따라가요.</p>
+        <p>코딩을 처음 해본다면 1번부터 차례로 따라오세요. 용어를 하나씩 배우면서 내 홈페이지를 만들고, 저장하고, 인터넷에 공개하는 데까지 가요.</p>
       </div>
       <div className="grid" style={{ marginTop: 16 }}>
-        <Link to={`/tutorial/${finished ? 1 : Math.max(1, reached)}`} className="card">
-          <Stage>
-            <TutorialDemo />
-          </Stage>
-          <div className="card-body">
-            <div className="card-title">
-              <h4>왕초보라면 여기부터</h4>
-            </div>
-            <p>바이브코딩부터 내 홈페이지 공개까지 {total}단계</p>
-            {reached > 0 && <p className="card-alias">{finished ? '다 마쳤어요 · 처음부터 다시 보기' : `${reached} / ${total} 진행 중 · 이어서 하기`}</p>}
-          </div>
-        </Link>
+        {TUTORIALS.map((tut, i) => (
+          <TutorialCard key={tut.title} tut={tut} course={i + 1} />
+        ))}
       </div>
     </section>
   )

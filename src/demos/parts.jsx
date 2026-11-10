@@ -173,18 +173,18 @@ export const Phone = ({ children, title = 'MyApp', right }) => (
   </div>
 )
 
-// 튜토리얼 진입 카드: 시작부터 공개까지 길을 따라 한 칸씩 나아가는 그림
-const ROAD = ['시작', '준비', '만들기', '열기', '저장', '공개']
-export function TutorialDemo() {
-  const s = useStep(ROAD.length + 1, 700)
-  const at = Math.min(s, ROAD.length - 1)
+// 튜토리얼 진입 카드: 정해진 길을 따라 한 칸씩 나아가는 그림
+export function TutorialDemo({ road, title }) {
+  const s = useStep(road.length + 1, 700)
+  const at = Math.min(s, road.length - 1)
+  const gap = 220 / (road.length - 1)
   return (
     <>
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 38, textAlign: 'center', fontSize: 15, fontWeight: 800 }}>0부터 내 홈페이지까지</div>
+      <div style={{ position: 'absolute', left: 0, right: 0, top: 40, textAlign: 'center', fontSize: 14, fontWeight: 800 }}>{title}</div>
       <div className="road-line" />
-      <motion.div className="road-fill" initial={false} animate={{ width: at * 44 }} transition={{ duration: 0.4, ease }} />
-      {ROAD.map((r, i) => (
-        <div key={r} className="road-stop" style={{ left: 30 + i * 44 }}>
+      <motion.div className="road-fill" initial={false} animate={{ width: at * gap }} transition={{ duration: 0.4, ease }} />
+      {road.map((r, i) => (
+        <div key={r} className="road-stop" style={{ left: 30 + i * gap }}>
           <motion.span initial={false} animate={{ background: i <= at ? C.acc : '#ffffff', borderColor: i <= at ? C.acc : '#d6d2c8', scale: i === at ? 1.25 : 1 }} transition={{ duration: 0.3 }} />
           <em style={{ color: i <= at ? C.ink : '#a8a398' }}>{r}</em>
         </div>

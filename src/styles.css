@@ -1658,11 +1658,19 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .road-stop { position: absolute; top: 104px; width: 12px; display: grid; justify-items: center; gap: 8px; }
 .road-stop span { display: block; width: 20px; height: 20px; border-radius: 99px; border: 2.5px solid; }
 .road-stop em { font-style: normal; font-size: 10px; font-weight: 800; white-space: nowrap; }
-.tut-bar { display: flex; gap: 4px; margin: 12px 0 18px; max-width: 520px; }
-.tut-bar i { flex: 1; height: 6px; border-radius: 99px; background: #e7e3da; }
-.tut-bar i.on { background: var(--acc); }
-.tut-lead { background: #fff; border: 1px solid #ffdcc8; border-left: 4px solid var(--acc); border-radius: 16px; padding: 16px 20px; margin-bottom: 26px; display: grid; gap: 6px; }
-.tut-lead p { margin: 0; font-size: 17px; line-height: 1.8; color: #2f2d29; text-wrap: pretty; word-break: keep-all; }
+.tut-bar { display: flex; gap: 4px; margin: 6px 0 18px; max-width: 520px; }
+.tut-bar a { flex: 1; padding: 8px 0; cursor: pointer; }
+.tut-bar a i { display: block; height: 6px; border-radius: 99px; background: #e7e3da; transition: background 0.2s, transform 0.2s; }
+.tut-bar a.on i { background: var(--acc); }
+.tut-bar a.cur i { transform: scaleY(1.6); }
+.tut-bar a:hover i { background: #ffb48f; }
+.tut-bar a.on:hover i { background: #e85a1f; }
+.tut-lead { margin: 0 0 28px; font-size: 18px; line-height: 1.8; color: #2f2d29; text-wrap: pretty; word-break: keep-all; }
+.tut-task { margin-bottom: 36px; }
+.tut-task h2 { font-size: 20px; font-weight: 750; letter-spacing: -0.02em; margin: 0 0 14px; }
+.tut-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.tut-links .btn { background: var(--acc); }
+.tut-links .btn:hover { background: #e85a1f; }
 .tut-todo { margin: 0 0 16px; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: todo; }
 .tut-todo li { counter-increment: todo; display: flex; gap: 10px; align-items: baseline; font-size: 16px; line-height: 1.6; }
 .tut-todo li::before { content: counter(todo); flex-shrink: 0; width: 22px; height: 22px; border-radius: 99px; background: var(--acc-soft); color: var(--acc); font-size: 12px; font-weight: 800; display: grid; place-items: center; transform: translateY(2px); }
@@ -1677,6 +1685,6 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
   .tut-prompts { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .tut-lead p { font-size: 16px; }
+  .tut-lead { font-size: 16.5px; }
   .tut-next { height: 48px; padding: 0 18px; font-size: 14.5px; }
 }
