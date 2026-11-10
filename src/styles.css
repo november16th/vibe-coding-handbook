@@ -1682,9 +1682,7 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .tut-prompts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .tut-done { margin-top: 32px; display: grid; gap: 4px; padding: 20px 22px; border-radius: 22px; background: #dff6ee; color: #146b55; font-size: 15.5px; }
 .tut-done b { font-size: 18px; }
-.tut-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
-.tut-prev { font-size: 15px; font-weight: 700; color: var(--muted); padding: 12px 4px; }
-.tut-prev:hover { color: var(--ink); }
+.tut-nav { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
 .tut-next { height: 52px; padding: 0 28px; font-size: 16px; }
 @media (max-width: 860px) {
   .tut-prompts { grid-template-columns: 1fr; }

@@ -55,9 +55,11 @@ export default function Tutorial() {
 
       <main className="wrap detail" key={`${c}-${n}`}>
         <motion.div className="detail-head" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          <Link to="/#tutorial" className="back">
-            ← 전체 용어
-          </Link>
+          {n > 1 && (
+            <Link to={`/tutorial/${c}/${n - 1}`} className="back">
+              ← 이전 단계
+            </Link>
+          )}
           {tut.prev && n === 1 && (
             <div className="tut-prev-course">
               <p>
@@ -130,13 +132,6 @@ export default function Tutorial() {
         )}
 
         <nav className="tut-nav">
-          {n > 1 ? (
-            <Link to={`/tutorial/${c}/${n - 1}`} className="tut-prev">
-              ← 이전 단계
-            </Link>
-          ) : (
-            <span />
-          )}
           {!last ? (
             <Link to={`/tutorial/${c}/${n + 1}`} className="btn tut-next">
               다음 단계 · {getTerm(tut.steps[n].term).en} →
