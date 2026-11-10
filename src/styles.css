@@ -1693,3 +1693,25 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
   .tut-lead { font-size: 16.5px; }
   .tut-next { height: 48px; padding: 0 18px; font-size: 14.5px; }
 }
+.pp-repo { position: absolute; left: 82px; right: 82px; top: 62px; height: 108px; background: #fff; border: 2px solid; border-radius: 14px; display: grid; place-items: center; align-content: center; gap: 4px; font-size: 10px; }
+.pp-repo b { font-size: 11.5px; }
+.pp-repo span { font-size: 8.5px; color: #8a857b; font-weight: 700; }
+.pp-viewer { position: absolute; width: 22px; height: 22px; border-radius: 99px; display: grid; place-items: center; border: 2px solid #fff; }
+.pp-me { position: absolute; left: 182px; top: 52px; width: 24px; height: 24px; border-radius: 99px; background: var(--acc); color: #fff; font-size: 10px; font-weight: 800; display: grid; place-items: center; border: 2px solid #fff; }
+.at-card { position: absolute; left: 40px; right: 40px; top: 16px; background: #1b1b20; color: #e8e6e1; border-radius: 12px; padding: 10px 12px; display: grid; gap: 4px; }
+.at-card .mini-cap { color: #9a958b; }
+.at-val { font-size: 11px; color: #ffc43d; }
+.at-warn { font-size: 8.5px; font-weight: 700; color: #ff8a8b; }
+.vc-tri { position: absolute; left: 106px; top: 62px; width: 68px; height: 74px; display: grid; justify-items: center; align-content: start; gap: 5px; }
+.vc-tri span { width: 0; height: 0; border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 38px solid var(--ink); }
+.vc-tri b { font-size: 10px; }
+.vc-tri em { font-style: normal; font-size: 8px; color: var(--acc); font-weight: 800; }
+.sd-sub { color: var(--acc); font-weight: 800; background: var(--acc-soft); border-radius: 4px; padding: 0 2px; }
+.sd-label { position: absolute; font-size: 9px; font-weight: 800; color: var(--acc); }
+.sd-label.grey { color: #8a857b; }
+.tut-walk { gap: 22px; }
+.tut-walk-body { flex: 1; min-width: 0; display: grid; gap: 8px; }
+.tut-walk-body p { margin: 0; font-size: 16px; line-height: 1.7; word-break: keep-all; }
+.tut-walk-body .tut-walk-tip { font-size: 14px; color: var(--muted); background: var(--demo); border-radius: 12px; padding: 9px 13px; }
+.tut-walk-img { display: block; max-width: 720px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; cursor: zoom-in; }
+.tut-walk-img img { display: block; width: 100%; height: auto; }

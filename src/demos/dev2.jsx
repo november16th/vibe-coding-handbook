@@ -679,3 +679,135 @@ export function DevTools() {
     </Win>
   )
 }
+
+/* ───────── 튜토리얼용 추가 ───────── */
+
+export function PublicPrivate() {
+  const priv = useStep(2, 2200) === 1
+  return (
+    <>
+      <div className="row" style={{ position: 'absolute', left: 0, right: 0, top: 16, justifyContent: 'center', gap: 6 }}>
+        {['Public', 'Private'].map((t, i) => (
+          <motion.span key={t} className="hcj-tag" initial={false} animate={{ background: priv === !!i ? C.ink : '#ffffff', color: priv === !!i ? '#ffffff' : '#6b665d' }}>
+            <b>{t}</b> {i ? '나만 보기' : '누구나 보기'}
+          </motion.span>
+        ))}
+      </div>
+      <motion.div className="pp-repo" initial={false} animate={{ borderColor: priv ? C.ink : '#2ec4a0' }}>
+        <Icon n={priv ? 'lock' : 'globe'} size={22} color={priv ? C.ink : '#2ec4a0'} />
+        <b>me / my-shop</b>
+        <span>{priv ? '나와 초대한 사람만' : '인터넷의 누구나'}</span>
+      </motion.div>
+      {[
+        [30, 70],
+        [36, 150],
+        [232, 72],
+        [226, 148],
+      ].map(([x, y], i) => (
+        <motion.span
+          key={i}
+          className="pp-viewer"
+          style={{ left: x, top: y, background: PALETTE[i] }}
+          initial={false}
+          animate={priv ? { x: 0, opacity: 0.35, scale: 0.9 } : { x: x < 140 ? 22 : -22, opacity: 1, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 22, delay: i * 0.06 }}
+        >
+          <Icon n="user" size={10} color="#fff" w={2.6} />
+        </motion.span>
+      ))}
+      <AnimatePresence>
+        {priv && (
+          <motion.span className="pp-me" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ type: 'spring', stiffness: 500, damping: 16 }}>
+            나
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
+export function AccessToken() {
+  const s = useStep(4, 1100)
+  const shown = s === 1
+  return (
+    <>
+      <div className="at-card">
+        <span className="mini-cap">개발자 토큰 (출입증)</span>
+        <span className="mono at-val">{shown ? 'github_pat_11AB…9xQ' : 'github_pat_••••••••••'}</span>
+        <span className="at-warn">한 번만 보여줘요 · 비밀번호처럼 숨기기</span>
+      </div>
+      <Node icon="laptop" label="내 컴퓨터" x={52} y={118} />
+      <Node icon="cloud" label="GitHub" x={228} y={118} dark />
+      {s >= 2 && (
+        <Pkt key={s} color={C.acc} style={{ top: 134 }} initial={{ x: 96, opacity: 0 }} animate={{ x: [96, 170], opacity: [0, 1, 1, 0] }} transition={{ duration: 0.8 }}>
+          토큰으로 push
+        </Pkt>
+      )}
+      {s === 3 && (
+        <motion.span className="ag-ok" style={{ position: 'absolute', left: 248, top: 112, width: 20, height: 20 }} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 500, damping: 16 }}>
+          <Check size={11} color="#fff" width={4} />
+        </motion.span>
+      )}
+    </>
+  )
+}
+
+export function Vercel() {
+  const k = useTick(4200)
+  return (
+    <div key={k}>
+      <Node icon="cloud" label="GitHub" x={40} y={70} dark />
+      <motion.div className="vc-tri" initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
+        <span />
+        <b>Vercel</b>
+        <motion.em initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 1, 0] }} transition={{ delay: 0.9, duration: 1.2, times: [0, 0.1, 0.8, 1] }}>
+          빌드 중…
+        </motion.em>
+      </motion.div>
+      <Node icon="globe" label="전 세계 공개" x={240} y={70} />
+      <Pkt style={{ top: 86 }} initial={{ x: 80, opacity: 0 }} animate={{ x: [80, 104], opacity: [0, 1, 1, 0] }} transition={{ delay: 0.2, duration: 0.6 }}>
+        push
+      </Pkt>
+      <Pkt color={C.mint} style={{ top: 86 }} initial={{ x: 176, opacity: 0 }} animate={{ x: [172, 196], opacity: [0, 1, 1, 0] }} transition={{ delay: 2.1, duration: 0.6 }}>
+        배포
+      </Pkt>
+      <motion.div className="dp-done" style={{ top: 160 }} {...fadeIn(2.6)}>
+        <Check size={11} color="#158a6c" />
+        <span className="mono">my-shop.vercel.app</span> 공개 완료
+      </motion.div>
+    </div>
+  )
+}
+
+const SUB = 'my-shop'
+export function Subdomain() {
+  const k = useTick(4200)
+  return (
+    <div key={k}>
+      <div className="lp-bar" style={{ top: 60, fontSize: 13 }}>
+        <Icon n="globe" size={12} color="#8a857b" />
+        <span className="mono">
+          <span className="sd-sub">
+            {[...SUB].map((ch, i) => (
+              <motion.span key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.08, duration: 0 }}>
+                {ch}
+              </motion.span>
+            ))}
+          </span>
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} style={{ color: '#8a857b' }}>
+            .vercel.app
+          </motion.span>
+        </span>
+      </div>
+      <motion.span className="sd-label" style={{ left: 54, top: 104 }} {...fadeIn(1.4)}>
+        ↑ 내가 정한 이름 (서브도메인)
+      </motion.span>
+      <motion.span className="sd-label grey" style={{ right: 34, top: 130 }} {...fadeIn(1.9)}>
+        ↑ Vercel이 빌려주는 주소
+      </motion.span>
+      <motion.span className="chip" style={{ position: 'absolute', left: 40, right: 40, top: 166, textAlign: 'center' }} {...fadeIn(2.5)}>
+        도메인을 사지 않아도 바로 쓸 수 있어요
+      </motion.span>
+    </div>
+  )
+}

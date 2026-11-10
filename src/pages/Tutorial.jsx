@@ -1,9 +1,31 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { getTerm } from '../terms'
-import { TUTORIALS } from '../tutorial'
+import { TUTORIALS, SHOTS } from '../tutorial'
 import { PromptBox } from '../components/kit'
 import { TermIntro, TermBody } from './Detail'
+
+// **굵게** 표시만 지원하는 아주 작은 변환
+const rich = (text) => text.split('**').map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))
+
+function WalkItem({ text, shot, tip }) {
+  const img = shot && SHOTS.has(shot) ? `/tutorial/${shot}` : null
+  return (
+    <li>
+      <div className="tut-walk-body">
+        {text.map((t) => (
+          <p key={t}>{rich(t)}</p>
+        ))}
+        {tip && <p className="tut-walk-tip">{tip}</p>}
+        {img && (
+          <a className="tut-walk-img" href={img} target="_blank" rel="noreferrer" title="크게 보기">
+            <img src={img} alt="" loading="lazy" />
+          </a>
+        )}
+      </div>
+    </li>
+  )
+}
 
 export default function Tutorial() {
   const { course, step } = useParams()
@@ -19,7 +41,7 @@ export default function Tutorial() {
   const term = getTerm(lesson.term)
   const last = n === total
   const nextTut = TUTORIALS[c]
-  const hasTask = lesson.todo || lesson.prompt
+  const hasTask = lesson.walk || lesson.todo || lesson.prompt
 
   return (
     <>
@@ -52,6 +74,13 @@ export default function Tutorial() {
           {hasTask && (
             <section className="tut-task">
               <h2>이번 단계에서 해볼 일</h2>
+              {lesson.walk && (
+                <ol className="tut-todo tut-walk">
+                  {lesson.walk.map((w) => (
+                    <WalkItem key={w.text[0]} {...w} />
+                  ))}
+                </ol>
+              )}
               {lesson.todo && (
                 <ul className="tut-todo">
                   {lesson.todo.map((t) => (
@@ -70,7 +99,7 @@ export default function Tutorial() {
               )}
               <div className="tut-prompts">
                 {lesson.prompt && <PromptBox text={lesson.prompt} label="👍 AI에게 이렇게 보내보세요" tone="go" />}
-                {lesson.stuck && <PromptBox text={lesson.stuck} label="🆘 막혔을 때는 이렇게 물어보세요" tone="stuck" />}
+                {lesson.stuck && <PromptBox text={lesson.stuck} label="❌ 막혔을 때는 이렇게 물어보세요" tone="stuck" />}
               </div>
             </section>
           )}
