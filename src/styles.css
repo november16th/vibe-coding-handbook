@@ -1505,10 +1505,6 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .term-top { height: 20px; display: flex; gap: 5px; padding: 0 10px; align-items: center; background: #26262c; }
 .term-top i { width: 7px; height: 7px; border-radius: 99px; }
 .term-body { padding: 10px 12px; font-size: 9.5px; color: #e8e6e1; line-height: 1.85; }
-.cm-dot { position: absolute; width: 16px; height: 16px; border-radius: 99px; background: #fff; border: 3px solid var(--acc); }
-.cm-ring { position: absolute; width: 16px; height: 16px; border-radius: 99px; background: var(--acc); }
-.cm { position: absolute; width: 72px; display: grid; justify-items: center; gap: 1px; font-size: 9.5px; font-weight: 700; }
-.cm .mono { font-size: 8px; color: #9a958b; }
 .push-box { position: absolute; width: 90px; padding: 10px; background: #fff; border: 1px solid #e7e3da; border-radius: 14px; display: grid; gap: 5px; justify-items: center; font-size: 9.5px; }
 .push-box.dark { background: var(--ink); border-color: var(--ink); color: #fff; }
 .push-dot { display: inline-block; width: 10px; height: 10px; border-radius: 99px; background: var(--acc); }

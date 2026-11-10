@@ -6,7 +6,7 @@ import { CodeArea } from './sim-dev'
 
 const hash = () => Math.random().toString(16).slice(2, 9)
 
-/* ───────── Commit ───────── */
+/* ───────── Commit / Push ───────── */
 
 const FILES0 = [
   { name: 'src/App.jsx', changed: true },
@@ -15,14 +15,16 @@ const FILES0 = [
 ]
 const MSG_EXAMPLES = ['로그인 버튼 색을 주황색으로 변경', '할 일 삭제 기능 추가', '모바일에서 메뉴 겹치는 문제 수정']
 
-function CommitPG() {
+function CommitPushPG() {
   const [files, setFiles] = useState(FILES0)
   const [staged, setStaged] = useState([])
   const [msg, setMsg] = useState('')
   const [history, setHistory] = useState([{ id: 'a1f3c9e', msg: '첫 커밋: 프로젝트 시작', files: 3 }])
   const [err, setErr] = useState('')
+  const [remote, setRemote] = useState(['a1f3c9e'])
   const { logs, push, clear } = useEventLog()
   const changed = files.filter((f) => f.changed)
+  const unpushed = history.filter((h) => !remote.includes(h.id))
 
   const stage = (name) => {
     setStaged(staged.includes(name) ? staged.filter((x) => x !== name) : [...staged, name])
@@ -39,17 +41,23 @@ function CommitPG() {
     setErr('')
     push('end', `git commit -m "${msg.trim()}" → ${id} 저장 지점 생성`)
   }
+  const upload = () => {
+    if (!unpushed.length) return setErr('올릴 새 커밋이 없어요. 먼저 커밋해 주세요')
+    setRemote(history.map((h) => h.id))
+    setErr('')
+    push('move', `git push → 커밋 ${unpushed.length}개를 GitHub(원격 저장소)에 올림`)
+  }
   const edit = () => {
     const f = files.find((x) => !x.changed) || files[0]
     setFiles(files.map((x) => (x === f ? { ...x, changed: true } : x)))
     push('child', `${f.name} 수정함 → 바뀐 파일 목록에 나타남`)
   }
 
-  const prompt = `지금까지 바꾼 내용을 커밋(Commit)해줘. ${staged.length ? `${staged.join(', ')} 파일만 골라 담고(git add)` : '바뀐 파일을 확인해서 관련 있는 것만 담고(git add)'}, 커밋 메시지는 ${msg.trim() ? `"${msg.trim()}"` : '무엇을 왜 바꿨는지 한 줄로 알기 쉽게'} 적어줘. 서로 다른 작업은 커밋을 나눠서, 나중에 이 지점으로 되돌아올 수 있게.`
+  const prompt = `지금까지 바꾼 내용을 커밋(Commit)해줘. ${staged.length ? `${staged.join(', ')} 파일만 골라 담고(git add)` : '바뀐 파일을 확인해서 관련 있는 것만 담고(git add)'}, 커밋 메시지는 ${msg.trim() ? `"${msg.trim()}"` : '무엇을 왜 바꿨는지 한 줄로 알기 쉽게'} 적어줘. 서로 다른 작업은 커밋을 나눠서, 나중에 이 지점으로 되돌아올 수 있게. 커밋이 끝나면 GitHub 원격 저장소에 푸시(Push)까지 해줘.`
 
   return (
     <Shell
-      hint="파일을 담고(add) 메시지를 써서 커밋해 보세요"
+      hint="파일을 담고(add) 커밋한 뒤, 푸시로 GitHub에 올려 보세요"
       stage={
         <div className="pg-git">
           <div className="pg-git-col">
@@ -68,6 +76,9 @@ function CommitPG() {
               <button className="btn small" onClick={commit}>
                 커밋 ({staged.length})
               </button>
+              <button className="btn small" onClick={upload}>
+                푸시 ({unpushed.length})
+              </button>
               <button className="btn small ghost" onClick={edit}>
                 파일 수정하기
               </button>
@@ -83,7 +94,7 @@ function CommitPG() {
                     <div>
                       <b>{h.msg}</b>
                       <small className="mono">
-                        {h.id} · 파일 {h.files}개{i === 0 && ' · HEAD'}
+                        {h.id} · 파일 {h.files}개{i === 0 && ' · HEAD'} · {remote.includes(h.id) ? 'GitHub ✓' : '내 컴퓨터에만'}
                       </small>
                     </div>
                   </motion.div>
@@ -729,7 +740,7 @@ function PromptPG() {
 }
 
 export const SIM_GIT_AI_PGS = {
-  'git-commit': CommitPG,
+  'commit-push': CommitPushPG,
   'git-branch': BranchPG,
   'merge-conflict': MergeConflictPG,
   gitignore: GitignorePG,

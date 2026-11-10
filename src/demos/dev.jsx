@@ -415,37 +415,6 @@ export function Terminal() {
   )
 }
 
-const COMMITS = ['첫 화면', '로그인 추가', '버튼 수정', '배포 준비']
-export function Commit() {
-  const k = useTick(4200)
-  return (
-    <>
-      <span className="chip mono" style={{ position: 'absolute', left: 18, top: 18 }}>
-        git commit -m "버튼 수정"
-      </span>
-      <div key={k}>
-        <svg viewBox="0 0 280 210" style={{ position: 'absolute', inset: 0 }}>
-          <motion.line x1="36" y1="112" x2="244" y2="112" stroke="#d6d2c8" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2.4, ease: 'linear' }} />
-        </svg>
-        {COMMITS.map((m, i) => {
-          const x = 44 + i * 64
-          const d = (2.4 * (x - 36)) / 208
-          return (
-            <div key={i}>
-              <motion.span className="cm-ring" style={{ left: x - 8, top: 104 }} initial={{ scale: 1, opacity: 0 }} animate={{ scale: [1, 2.6], opacity: [0.6, 0] }} transition={{ delay: d, duration: 0.6 }} />
-              <motion.span className="cm-dot" style={{ left: x - 8, top: 104 }} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: d, type: 'spring', stiffness: 500, damping: 15 }} />
-              <motion.div className="cm" style={{ left: x - 36, top: i % 2 ? 128 : 66 }} initial={{ opacity: 0, y: i % 2 ? -6 : 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: d + 0.1 }}>
-                <span className="mono">{['a1f3c2', '7b9e04', 'c4d8a1', 'e02f6b'][i]}</span>
-                {m}
-              </motion.div>
-            </div>
-          )
-        })}
-      </div>
-    </>
-  )
-}
-
 export function Branch() {
   const k = useTick(4800)
   const dot = (cx, cy, delay, color) => (
@@ -474,8 +443,9 @@ export function Branch() {
 }
 
 const PUSH_PATH = 'M 108 138 C 140 138, 150 74, 184 70'
-export function Push() {
-  const k = useTick(3600)
+// 커밋으로 내 컴퓨터에 저장 지점을 찍고(①), 푸시로 GitHub에 올린다(②)
+export function CommitPush() {
+  const k = useTick(4400)
   return (
     <div key={k}>
       <svg viewBox="0 0 280 210" style={{ position: 'absolute', inset: 0 }}>
@@ -486,25 +456,28 @@ export function Push() {
         <b>내 컴퓨터</b>
         <div className="row" style={{ gap: 4 }}>
           {[0, 1, 2].map((i) => (
-            <motion.span key={i} className="push-dot" initial={{ opacity: 1 }} animate={{ opacity: 0.25 }} transition={{ delay: 0.3 + i * 0.35 }} />
+            <motion.span key={i} className="push-dot" initial={{ scale: 0, opacity: 1 }} animate={{ scale: [0, 1, 1], opacity: [1, 1, 0.25] }} transition={{ delay: 0.3 + i * 0.35, duration: 1.6 + (2 - i) * 0.35, times: [0, 0.15, 1] }} />
           ))}
         </div>
       </div>
       <div className="push-box dark" style={{ left: 172, top: 36 }}>
         <Icon n="cloud" size={16} color="#fff" />
-        <b>원격 저장소</b>
+        <b>GitHub</b>
         <div className="row" style={{ gap: 4 }}>
           {[0, 1, 2].map((i) => (
-            <motion.span key={i} className="push-dot" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.1 + i * 0.35, type: 'spring', stiffness: 500, damping: 16 }} />
+            <motion.span key={i} className="push-dot" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.6 + i * 0.3, type: 'spring', stiffness: 500, damping: 16 }} />
           ))}
         </div>
       </div>
       {[0, 1, 2].map((i) => (
-        <motion.span key={i} className="push-dot fly" style={{ offsetPath: `path('${PUSH_PATH}')` }} initial={{ offsetDistance: '0%', opacity: 0 }} animate={{ offsetDistance: ['0%', '100%'], opacity: [1, 1, 0] }} transition={{ delay: 0.3 + i * 0.35, duration: 0.8, ease: 'easeInOut' }} />
+        <motion.span key={i} className="push-dot fly" style={{ offsetPath: `path('${PUSH_PATH}')` }} initial={{ offsetDistance: '0%', opacity: 0 }} animate={{ offsetDistance: ['0%', '100%'], opacity: [1, 1, 0] }} transition={{ delay: 1.9 + i * 0.3, duration: 0.8, ease: 'easeInOut' }} />
       ))}
-      <span className="chip mono" style={{ position: 'absolute', left: 118, top: 150 }}>
-        git push
-      </span>
+      <motion.span className="chip mono" style={{ position: 'absolute', left: 18, top: 186 }} {...fadeIn(0.2)}>
+        ① git commit · 내 컴퓨터에 저장
+      </motion.span>
+      <motion.span className="chip mono" style={{ position: 'absolute', left: 126, top: 140 }} {...fadeIn(1.7)}>
+        ② git push · 업로드
+      </motion.span>
     </div>
   )
 }

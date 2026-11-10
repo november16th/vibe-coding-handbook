@@ -210,9 +210,8 @@ export const GROUPS = [
         items: [
           t('localhost-port', 'localhost · Port', '내 컴퓨터 주소와 문 번호', D.LocalhostPort, '개발 서버를 4000번 포트로 띄워줘. 이미 쓰고 있으면 다른 번호로 바꾸지 말고 알려줘.', { aka: ['로컬호스트', '포트', 'port', '127.0.0.1', '개발 서버', '로컬'] }),
           t('terminal', 'Terminal', '명령어 입력 창', D.Terminal, '이 프로젝트를 실행하려면 터미널에 어떤 명령어를 순서대로 입력해야 하는지 알려줘.', { aka: ['터미널', 'CLI', '명령 프롬프트', '콘솔', '쉘', 'Shell'] }),
-          t('git-commit', 'Commit', '저장 지점 찍기', D.Commit, '지금까지 작업한 걸 커밋해줘. 커밋 메시지는 무엇을 바꿨는지 한 줄로.', { aka: ['커밋', 'Git', '깃', '저장', '버전 관리'] }),
+          t('commit-push', 'Commit / Push', '내 컴퓨터에 저장하고 온라인에 올리기', D.CommitPush, '지금까지 작업한 걸 커밋해줘. 커밋 메시지는 무엇을 바꿨는지 한 줄로. 커밋이 끝나면 GitHub에 푸시까지 해줘.', { aka: ['커밋', '푸시', 'Commit', 'Push', 'Git', '깃', '저장', '업로드', '버전 관리', 'Pull', '풀', '원격 저장소'] }),
           t('git-branch', 'Branch', '갈라진 작업 줄기', D.Branch, '로그인 기능은 feature/login 브랜치를 만들어서 작업하고, 다 되면 main에 merge해줘.', { aka: ['브랜치', 'main', 'merge', '머지', '병합'] }),
-          t('git-push', 'Push', '온라인에 올리기', D.Push, '커밋한 내용을 GitHub에 push해줘.', { aka: ['푸시', 'Pull', '풀', '업로드', 'GitHub', '깃허브', '원격 저장소'] }),
           t('npm-install', 'npm install', '부품 설치하기', D.NpmInstall, '애니메이션에 motion 라이브러리를 쓰고 싶어. npm install로 설치하고 사용 예시를 하나 넣어줘.', { aka: ['npm', '엔피엠', '라이브러리', '패키지', 'node_modules', 'yarn', 'pnpm'] }),
           t('build', 'Build', '배포용으로 묶기', D.Build, 'npm run build로 빌드해보고, 에러가 나면 원인을 찾아서 고쳐줘.', { aka: ['빌드', 'dist', '번들', 'bundle'] }),
           t('deploy', 'Deploy', '인터넷에 공개하기', D.Deploy, '이 사이트를 Vercel에 배포하는 방법을 단계별로 알려줘. GitHub 저장소와 연결해서 push하면 자동 배포되게.', { aka: ['배포', '디플로이', '호스팅', 'Vercel', 'Netlify', '출시'] }),
