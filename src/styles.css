@@ -1180,7 +1180,10 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
   .site-intro + .group { padding-top: 20px; }
   .search { justify-self: stretch; max-width: none; height: 36px; }
   .topbar-in { grid-template-columns: 1fr; justify-items: center; }
-  .group-tabs a { padding: 7px 10px; font-size: 12.5px; }
+  .group-tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .group-tabs::-webkit-scrollbar { display: none; }
+  .group-tabs a { padding: 7px 9px; font-size: 12.5px; flex-shrink: 0; }
+  .group-tabs b { display: none; }
   .sub-tabs { padding: 0 16px 10px; }
   .wrap { padding: 0 16px 60px; }
   .group-head h2 { font-size: 22px; }
