@@ -130,7 +130,17 @@ export default function Home() {
             )}
           </label>
         </div>
-        <p className="site-tagline">{INTRO}</p>
+        <div className="site-meta">
+          <p className="site-tagline">{INTRO}</p>
+          <p className="site-credit">
+            <span>
+              <b>제작자</b> 박지윤
+            </span>
+            <span>
+              <b>출처</b> 각종 유튜브, 경험, 검색 등
+            </span>
+          </p>
+        </div>
         <div className="sub-tabs">
           {!hits &&
             activeGroup?.sections.map((s) => (
