@@ -12,7 +12,11 @@ import { recordView, useStats } from '../stats'
 // 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수
 export function PageViews({ stats, id }) {
   if (!stats) return null
-  return <span className="page-views">조회수 {(stats.views[id] ?? 0).toLocaleString()}</span>
+  return (
+    <span className="page-views">
+      <b>조회수</b> {(stats.views[id] ?? 0).toLocaleString()}
+    </span>
+  )
 }
 
 // 용어 이름·설명 (상세 화면과 튜토리얼이 함께 쓴다)
