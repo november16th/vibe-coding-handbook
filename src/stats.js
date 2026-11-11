@@ -15,16 +15,16 @@ const FAKE_STATS = ENABLED
     }
 
 // 시크릿 창 등에서 저장소 접근이 막혀도 화면은 멈추지 않게 한다
-const read = (storage, key) => {
+const read = (key) => {
   try {
-    return window[storage].getItem(key)
+    return localStorage.getItem(key)
   } catch {
     return null
   }
 }
-const write = (storage, key, value) => {
+const write = (key, value) => {
   try {
-    window[storage].setItem(key, value)
+    localStorage.setItem(key, value)
   } catch {
     // 저장하지 못해도 카운트에만 영향을 준다
   }
@@ -49,16 +49,13 @@ function send(body) {
 export function recordVisit() {
   if (!ENABLED) return
   const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' })
-  if (read('localStorage', 'visited') === day) return
-  send({ type: 'visit' }).then((ok) => ok && write('localStorage', 'visited', day))
+  if (read('visited') === day) return
+  send({ type: 'visit' }).then((ok) => ok && write('visited', day))
 }
 
-// 같은 탭에서 새로고침을 반복해도 한 번만 조회로 센다
+// 조회수는 페이지를 열 때마다 센다
 export function recordView(id) {
   if (!ENABLED) return
-  const key = `viewed:${id}`
-  if (read('sessionStorage', key)) return
-  write('sessionStorage', key, '1')
   send({ type: 'view', id })
 }
 
