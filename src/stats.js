@@ -5,13 +5,13 @@ const API = '/api/stats'
 // npm run dev에는 Vercel 함수가 없으므로 배포된 사이트에서만 호출한다
 const ENABLED = import.meta.env.PROD
 
-// 개발 화면에서 숫자 자리를 확인하기 위한 가짜 값. 카드마다 다른 숫자가 나온다
+// 개발 화면에서 숫자 자리를 확인하기 위한 가짜 값. 가짜임을 알 수 있게 모두 1234로 둔다
 const FAKE_STATS = ENABLED
   ? null
   : {
-      today: 12,
-      total: 3456,
-      views: new Proxy({}, { get: (_, id) => [...String(id)].reduce((sum, ch) => (sum * 31 + ch.charCodeAt(0)) % 5000, 7) }),
+      today: 1234,
+      total: 1234,
+      views: new Proxy({}, { get: () => 1234 }),
     }
 
 // 시크릿 창 등에서 저장소 접근이 막혀도 화면은 멈추지 않게 한다
