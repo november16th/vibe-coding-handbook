@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import { GROUPS, searchTerms } from '../terms'
 import { Stage, Icon, TutorialDemo } from '../demos/parts'
 import { TUTORIALS } from '../tutorial'
+import { useStats } from '../stats'
 
 export function TermCard({ term, alias }) {
   const { Demo } = term
@@ -87,6 +88,7 @@ function useActiveGroup() {
 
 export default function Home() {
   const active = useActiveGroup()
+  const stats = useStats()
   const activeGroup = GROUPS.find((g) => g.id === active)
   const [q, setQ] = useState('')
   const hits = q.trim() ? searchTerms(q) : null
@@ -132,14 +134,20 @@ export default function Home() {
         </div>
         <div className="site-meta">
           <p className="site-tagline">{INTRO}</p>
-          <p className="site-credit">
-            <span>
-              <b>제작자</b> 박지윤
-            </span>
-            <span>
-              <b>출처</b> 각종 유튜브, 경험, 검색 등
-            </span>
-          </p>
+          <div className="site-credit">
+            <b>제작자</b>
+            <span>박지윤</span>
+            <b>출처</b>
+            <span>유튜브, 경험, 검색</span>
+            {stats && (
+              <>
+                <b>방문자</b>
+                <span>{stats.today.toLocaleString()}</span>
+                <b>누적</b>
+                <span>{stats.total.toLocaleString()}</span>
+              </>
+            )}
+          </div>
         </div>
         <div className="sub-tabs">
           {!hits &&

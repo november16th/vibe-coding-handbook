@@ -4,7 +4,10 @@ import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration, useLoca
 import Home from './pages/Home'
 import Detail from './pages/Detail'
 import Tutorial from './pages/Tutorial'
+import { recordVisit } from './stats'
 import './styles.css'
+
+recordVisit()
 
 // "/#section" 으로 돌아왔을 때 해당 섹션으로 이동
 function HashScroll() {
