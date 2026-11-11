@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { getTerm } from '../terms'
@@ -6,6 +7,13 @@ import { PromptBox } from '../components/kit'
 import { PLAYGROUNDS } from '../playgrounds'
 import { GUIDES } from '../guides'
 import { TermCard } from './Home'
+import { recordView, useStats } from '../stats'
+
+// 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수
+export function PageViews({ stats, id }) {
+  if (!stats) return null
+  return <span className="page-views">조회수 {(stats.views[id] ?? 0).toLocaleString()}</span>
+}
 
 // 용어 이름·설명 (상세 화면과 튜토리얼이 함께 쓴다)
 export function TermIntro({ term }) {
@@ -61,6 +69,12 @@ export default function Detail() {
   const { id } = useParams()
   const term = getTerm(id)
 
+  useEffect(() => {
+    if (getTerm(id)) recordView(id)
+  }, [id])
+
+  const stats = useStats(id)
+
   if (!term) {
     return (
       <main className="wrap detail">
@@ -87,9 +101,12 @@ export default function Detail() {
 
       <main className="wrap detail" key={term.id}>
         <motion.div className="detail-head" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          <Link to={`/#${term.section.id}`} className="back">
-            ← 전체 용어
-          </Link>
+          <div className="detail-top">
+            <Link to={`/#${term.section.id}`} className="back">
+              ← 전체 용어
+            </Link>
+            <PageViews stats={stats} id={term.id} />
+          </div>
           <span className="crumb">
             {term.group.title} · {term.section.title} <span className="mono">{term.no}</span>
           </span>
@@ -104,7 +121,7 @@ export default function Detail() {
             <h2>같은 분류의 다른 용어</h2>
             <div className="grid">
               {related.map((t) => (
-                <TermCard key={t.id} term={t} />
+                <TermCard key={t.id} term={t} views={stats && (stats.views[t.id] ?? 0)} />
               ))}
             </div>
           </section>

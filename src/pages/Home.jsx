@@ -6,7 +6,9 @@ import { Stage, Icon, TutorialDemo } from '../demos/parts'
 import { TUTORIALS } from '../tutorial'
 import { useStats } from '../stats'
 
-export function TermCard({ term, alias }) {
+const viewLabel = (n) => (n == null ? '' : `조회 ${n.toLocaleString()} · `)
+
+export function TermCard({ term, alias, views }) {
   const { Demo } = term
   return (
     <Link to={`/term/${term.id}`} className="card">
@@ -20,13 +22,16 @@ export function TermCard({ term, alias }) {
         <p>{term.ko}</p>
         {alias && <p className="card-alias">'{alias}'(으)로도 불려요</p>}
       </div>
-      <span className="card-no mono">{term.no}</span>
+      <span className="card-no mono">
+        {viewLabel(views)}
+        {term.no}
+      </span>
     </Link>
   )
 }
 
 // 튜토리얼 코스 카드
-function TutorialCard({ tut, course }) {
+function TutorialCard({ tut, course, views }) {
   return (
     <Link to={`/tutorial/${course}/1`} className="card">
       <Stage>
@@ -40,12 +45,15 @@ function TutorialCard({ tut, course }) {
           {tut.subtitle} · {tut.steps.length}단계
         </p>
       </div>
-      <span className="card-no mono">{String(course).padStart(2, '0')}</span>
+      <span className="card-no mono">
+        {viewLabel(views)}
+        {String(course).padStart(2, '0')}
+      </span>
     </Link>
   )
 }
 
-function TutorialSection() {
+function TutorialSection({ views }) {
   return (
     <section id="tutorial" className="group">
       <div className="group-head">
@@ -54,7 +62,7 @@ function TutorialSection() {
       </div>
       <div className="grid" style={{ marginTop: 16 }}>
         {TUTORIALS.map((tut, i) => (
-          <TutorialCard key={tut.title} tut={tut} course={i + 1} />
+          <TutorialCard key={tut.title} tut={tut} course={i + 1} views={views && (views[`tutorial-${i + 1}`] ?? 0)} />
         ))}
       </div>
     </section>
@@ -89,6 +97,7 @@ function useActiveGroup() {
 export default function Home() {
   const active = useActiveGroup()
   const stats = useStats()
+  const viewsOf = (id) => stats && (stats.views[id] ?? 0)
   const activeGroup = GROUPS.find((g) => g.id === active)
   const [q, setQ] = useState('')
   const hits = q.trim() ? searchTerms(q) : null
@@ -172,7 +181,7 @@ export default function Home() {
             {hits.length ? (
               <div className="grid">
                 {hits.map(({ term, alias }) => (
-                  <TermCard key={term.id} term={term} alias={alias} />
+                  <TermCard key={term.id} term={term} alias={alias} views={viewsOf(term.id)} />
                 ))}
               </div>
             ) : (
@@ -181,7 +190,7 @@ export default function Home() {
           </section>
         ) : (
           <>
-            <TutorialSection />
+            <TutorialSection views={stats?.views} />
             {GROUPS.map((g) => (
             <section key={g.id} id={g.id} className="group">
               <div className="group-head">
@@ -200,7 +209,7 @@ export default function Home() {
                   </div>
                   <div className="grid">
                     {s.items.map((t) => (
-                      <TermCard key={t.id} term={t} />
+                      <TermCard key={t.id} term={t} views={viewsOf(t.id)} />
                     ))}
                   </div>
                 </div>

@@ -1,9 +1,11 @@
+import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { getTerm } from '../terms'
 import { TUTORIALS, SHOTS } from '../tutorial'
 import { PromptBox } from '../components/kit'
-import { TermIntro, TermBody } from './Detail'
+import { TermIntro, TermBody, PageViews } from './Detail'
+import { recordView, useStats } from '../stats'
 
 // **굵게** 표시만 지원하는 아주 작은 변환
 const rich = (text) => text.split('**').map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))
@@ -34,6 +36,12 @@ export default function Tutorial() {
   const tut = TUTORIALS[c - 1]
   const lesson = tut?.steps[n - 1]
 
+  useEffect(() => {
+    if (tut) recordView(`tutorial-${c}`)
+  }, [tut, c])
+
+  const stats = useStats(c)
+
   if (!tut) return <Navigate to="/#tutorial" replace />
   if (!lesson) return <Navigate to={`/tutorial/${c}/1`} replace />
 
@@ -55,10 +63,15 @@ export default function Tutorial() {
 
       <main className="wrap detail" key={`${c}-${n}`}>
         <motion.div className="detail-head" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          {n > 1 && (
-            <Link to={`/tutorial/${c}/${n - 1}`} className="back">
-              ← 이전 단계
-            </Link>
+          {(n > 1 || stats) && (
+            <div className="detail-top">
+              {n > 1 && (
+                <Link to={`/tutorial/${c}/${n - 1}`} className="back">
+                  ← 이전 단계
+                </Link>
+              )}
+              <PageViews stats={stats} id={`tutorial-${c}`} />
+            </div>
           )}
           {tut.prev && n === 1 && (
             <div className="tut-prev-course">
