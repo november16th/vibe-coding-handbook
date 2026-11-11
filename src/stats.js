@@ -30,50 +30,45 @@ const write = (key, value) => {
   }
 }
 
-// 기록이 끝난 뒤에 숫자를 읽어야 방금 올린 값까지 보인다
-let writes = Promise.resolve()
+let visitInFlight = false
 
-function send(body) {
-  const request = fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
-    .then((res) => res.ok)
-    .catch(() => false)
-  writes = Promise.all([writes, request])
-  return request
-}
-
-// 같은 브라우저는 한국 날짜 기준 하루 한 번만 방문으로 센다
-export function recordVisit() {
-  if (!ENABLED) return
+// 기록할 것이 있으면 POST 한 번으로 기록하고 최신 숫자까지 받는다
+async function sync(view) {
   const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' })
-  if (read('visited') === day) return
-  send({ type: 'visit' }).then((ok) => ok && write('visited', day))
+  // 같은 브라우저는 한국 날짜 기준 하루 한 번만 방문으로 센다
+  const visit = read('visited') !== day && !visitInFlight
+  if (!visit && !view) {
+    const res = await fetch(API)
+    return res.ok ? res.json() : null
+  }
+
+  if (visit) visitInFlight = true
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visit, view }),
+    })
+    if (!res.ok) return null
+    if (visit) write('visited', day)
+    return res.json()
+  } finally {
+    if (visit) visitInFlight = false
+  }
 }
 
-// 조회수는 페이지를 열 때마다 센다
-export function recordView(id) {
-  if (!ENABLED) return
-  send({ type: 'view', id })
-}
-
-// 숫자를 못 불러오면 null로 남고, 화면은 숫자 없이 그대로 보인다
-// key가 바뀌면 다시 불러온다. 방금 올린 조회수까지 보려면 recordView 효과보다 뒤에서 호출한다
-export function useStats(key) {
+// view를 넘기면 그 페이지의 조회수를 1 올린다. 숫자를 못 불러오면 null로 남고, 화면은 숫자 없이 그대로 보인다
+export function useStats(view) {
   const [stats, setStats] = useState(FAKE_STATS)
   useEffect(() => {
     if (!ENABLED) return
     let alive = true
-    writes
-      .then(() => fetch(API))
-      .then((res) => (res.ok ? res.json() : null))
+    sync(view)
       .then((data) => alive && setStats(data))
       .catch(() => {})
     return () => {
       alive = false
     }
-  }, [key])
+  }, [view])
   return stats
 }

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { getTerm } from '../terms'
@@ -7,7 +6,7 @@ import { PromptBox } from '../components/kit'
 import { PLAYGROUNDS } from '../playgrounds'
 import { GUIDES } from '../guides'
 import { TermCard } from './Home'
-import { recordView, useStats } from '../stats'
+import { useStats } from '../stats'
 
 // 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수
 export function PageViews({ stats, id }) {
@@ -72,12 +71,7 @@ export function TermBody({ term, showPrompt = true }) {
 export default function Detail() {
   const { id } = useParams()
   const term = getTerm(id)
-
-  useEffect(() => {
-    if (getTerm(id)) recordView(id)
-  }, [id])
-
-  const stats = useStats(id)
+  const stats = useStats(term?.id)
 
   if (!term) {
     return (
