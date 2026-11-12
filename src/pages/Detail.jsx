@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { getTerm } from '../terms'
@@ -7,6 +8,7 @@ import { PLAYGROUNDS } from '../playgrounds'
 import { GUIDES } from '../guides'
 import { TermCard } from './Home'
 import { useStats } from '../stats'
+import ReadmeModal from '../components/ReadmeModal'
 
 // 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수
 export function PageViews({ stats, id }) {
@@ -16,6 +18,11 @@ export function PageViews({ stats, id }) {
       <b>조회수</b> {(stats.views[id] ?? 0).toLocaleString()}
     </span>
   )
+}
+
+// 움직이는 카드를 누르면 띄우는 팝업 (용어 id별)
+const DEMO_POPUPS = {
+  readme: { Popup: ReadmeModal, hint: '카드를 누르면 이 사이트의 README.md 전체를 볼 수 있어요' },
 }
 
 // 용어 이름·설명 (상세 화면과 튜토리얼이 함께 쓴다)
@@ -35,6 +42,8 @@ export function TermBody({ term, showPrompt = true }) {
   const { Demo } = term
   const Playground = term.playground && PLAYGROUNDS[term.playground]
   const { Guide, title: guideTitle } = GUIDES[term.id] ?? {}
+  const popup = DEMO_POPUPS[term.id]
+  const [open, setOpen] = useState(false)
   return (
     <>
       {Playground ? (
@@ -44,11 +53,23 @@ export function TermBody({ term, showPrompt = true }) {
         </section>
       ) : Guide ? null : (
         <section className="detail-block">
-          <div className="detail-demo">
-            <Stage className="big">
-              <Demo />
-            </Stage>
-          </div>
+          {popup ? (
+            <>
+              <button className="detail-demo is-click" onClick={() => setOpen(true)} aria-label={popup.hint}>
+                <Stage className="big">
+                  <Demo />
+                </Stage>
+                <span className="detail-demo-hint">{popup.hint}</span>
+              </button>
+              <popup.Popup open={open} onClose={() => setOpen(false)} />
+            </>
+          ) : (
+            <div className="detail-demo">
+              <Stage className="big">
+                <Demo />
+              </Stage>
+            </div>
+          )}
           {showPrompt && (
             <>
               <p className="soon">이 용어의 직접 조작 화면은 준비 중이에요. 지금은 움직임을 보고 프롬프트를 복사해 쓸 수 있어요.</p>

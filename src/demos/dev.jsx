@@ -57,13 +57,14 @@ export function Markdown() {
 }
 
 const FILES = ['src/', 'public/', 'package.json', 'README.md']
+// 이 프로젝트의 README.md를 줄여서 보여준다
 export function Readme() {
-  const s = useStep(3, 1500)
+  const s = useStep(4, 1500)
   return (
     <Win style={{ inset: '14px 20px' }}>
       <div className="repo-head">
         <Icon n="folder" size={11} />
-        <b>my-app</b>
+        <b>vibe-coding-handbook</b>
       </div>
       {FILES.map((f) => (
         <motion.div key={f} className="repo-row" initial={false} animate={{ background: f === 'README.md' && s >= 1 ? '#FFEDE3' : 'rgba(255,237,227,0)' }}>
@@ -72,12 +73,15 @@ export function Readme() {
         </motion.div>
       ))}
       <AnimatePresence>
-        {s === 2 && (
+        {s >= 2 && (
           <motion.div className="repo-readme" initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
             <span className="mono" style={{ fontSize: 7.5, color: '#9a958b' }}>README.md</span>
-            <b style={{ fontSize: 13 }}>my-app</b>
-            <span style={{ fontSize: 9, color: '#57534b' }}>할 일을 정리하는 웹앱이에요.</span>
-            <b style={{ fontSize: 9.5, marginTop: 3 }}>실행 방법</b>
+            <b style={{ fontSize: 12 }}>VIBE CODING HANDBOOK</b>
+            <span style={{ fontSize: 8.5, color: '#57534b' }}>바이브코딩 용어 151개를 움직이는 카드로 정리한 사이트예요.</span>
+            <b className="repo-h">주요 기능</b>
+            <span className="repo-li">· 움직이는 카드 · 쉬운 설명 · 요청 문장</span>
+            <span className="repo-li">· 직접 만져보기 · 튜토리얼</span>
+            <b className="repo-h">설치 · 실행 방법</b>
             <span className="code-mini mono">npm install && npm run dev</span>
           </motion.div>
         )}
@@ -86,12 +90,13 @@ export function Readme() {
   )
 }
 
+// 이 핸드북의 용어 카드 하나를 JSON으로 적으면 이렇게 된다
 export function Json() {
   const n = Math.min(useStep(5, 800), 3)
   const lines = [
-    ['"name"', '"바이브"'],
-    ['"likes"', '42'],
-    ['"done"', 'true'],
+    ['"en"', '"README"'],
+    ['"group"', '"AI"'],
+    ['"no"', '8'],
   ]
   return (
     <>
@@ -99,7 +104,7 @@ export function Json() {
         {'{'}
         {lines.map(([k, v], i) => (
           <motion.div key={i} initial={false} animate={{ opacity: i < n ? 1 : 0.25 }} style={{ paddingLeft: 10 }}>
-            <span className="jk">{k}</span>: <span className={'jv' + (i ? ' n' : '')}>{v}</span>
+            <span className="jk">{k}</span>: <span className={'jv' + (i === 2 ? ' n' : '')}>{v}</span>
             {i < 2 ? ',' : ''}
           </motion.div>
         ))}
@@ -107,16 +112,15 @@ export function Json() {
       </div>
       <span className="json-arrow">→</span>
       <div className="json-card">
-        <motion.div className="row" style={{ gap: 6 }} initial={false} animate={{ opacity: n >= 1 ? 1 : 0.15 }}>
-          <span className="avatar" style={{ background: C.coral, width: 18, height: 18 }} />
-          <b style={{ fontSize: 11 }}>바이브</b>
-        </motion.div>
-        <motion.div className="row" style={{ gap: 5, fontSize: 10, fontWeight: 700 }} initial={false} animate={{ opacity: n >= 2 ? 1 : 0.15 }}>
-          <Icon n="heart" size={12} color={C.pink} /> 42
-        </motion.div>
-        <motion.div className="row" style={{ gap: 5, fontSize: 10, fontWeight: 700, color: '#158a6c' }} initial={false} animate={{ opacity: n >= 3 ? 1 : 0.15 }}>
-          <Check size={12} color="#158a6c" /> 완료
-        </motion.div>
+        <motion.b style={{ fontSize: 12 }} initial={false} animate={{ opacity: n >= 1 ? 1 : 0.15 }}>
+          README
+        </motion.b>
+        <motion.span className="chip" style={{ justifySelf: 'start' }} initial={false} animate={{ opacity: n >= 2 ? 1 : 0.15 }}>
+          AI 용어
+        </motion.span>
+        <motion.span className="mono" style={{ fontSize: 9, fontWeight: 700, color: C.acc }} initial={false} animate={{ opacity: n >= 3 ? 1 : 0.15 }}>
+          08
+        </motion.span>
       </div>
     </>
   )

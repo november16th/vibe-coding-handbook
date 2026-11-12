@@ -160,11 +160,12 @@ function MarkdownPG() {
 
 /* ───────── JSON ───────── */
 
+// 이 핸드북을 JSON으로 적어본 예시
 const JSON_SAMPLES = {
-  ok: '{\n  "name": "할 일 앱",\n  "version": 1,\n  "done": false,\n  "tags": ["개인", "공부"],\n  "owner": { "id": 7, "nick": "지수" }\n}',
-  comma: '{\n  "name": "할 일 앱"\n  "version": 1\n}',
-  quote: "{\n  'name': '할 일 앱',\n  \"version\": 1\n}",
-  trailing: '{\n  "name": "할 일 앱",\n  "tags": ["개인", "공부",],\n}',
+  ok: '{\n  "title": "VIBE CODING HANDBOOK",\n  "terms": 151,\n  "live": true,\n  "groups": ["UI", "디자인", "애니메이션", "개발 상식", "AI"],\n  "term": { "id": "readme", "en": "README", "ko": "프로젝트 설명서" }\n}',
+  comma: '{\n  "title": "VIBE CODING HANDBOOK"\n  "terms": 151\n}',
+  quote: "{\n  'title': 'VIBE CODING HANDBOOK',\n  \"terms\": 151\n}",
+  trailing: '{\n  "title": "VIBE CODING HANDBOOK",\n  "groups": ["UI", "AI",],\n}',
 }
 const JSON_HINT = { comma: '줄 끝에 쉼표(,)가 빠졌어요', quote: '작은따옴표(\') 대신 큰따옴표(")를 써야 해요', trailing: '마지막 항목 뒤에는 쉼표를 쓰면 안 돼요' }
 

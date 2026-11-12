@@ -446,8 +446,8 @@ function GitignorePG() {
 /* ───────── Token ───────── */
 
 const TOKEN_SAMPLES = {
-  ko: '로그인 버튼을 주황색으로 바꿔줘',
-  en: 'Change the login button to orange',
+  ko: '오늘은 기초 탄탄히 다지기!',
+  en: 'Build a solid foundation today!',
   code: 'const total = items.reduce((a, b) => a + b.price, 0)',
 }
 

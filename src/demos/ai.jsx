@@ -24,40 +24,43 @@ function CountTo({ to, duration, delay = 0 }) {
 
 /* ───────── AI 기초 ───────── */
 
+// 문장 앞부분과, 한 단어씩 고를 때마다 보이는 후보들 (첫 번째가 뽑히는 단어)
+const LLM_START = '박지윤의 AI 공유 세션은'
 const LLM_CANDS = [
   [
-    ['맑고', 0.62],
-    ['흐리고', 0.25],
-    ['추워서', 0.13],
+    ['유익하고', 0.58],
+    ['알차고', 0.27],
+    ['길고', 0.15],
   ],
   [
-    ['따뜻해요', 0.55],
-    ['좋아요', 0.3],
-    ['덥네요', 0.15],
+    ['재밌고', 0.61],
+    ['쉽고', 0.24],
+    ['깊고', 0.15],
+  ],
+  [
+    ['시간 순삭이다', 0.66],
+    ['최고다', 0.22],
+    ['끝났다', 0.12],
   ],
 ]
 export function Llm() {
-  const s = useStep(4, 1300)
-  const filled = Math.min(s, 2)
+  const s = useStep(LLM_CANDS.length + 2, 1200)
+  const filled = Math.min(s, LLM_CANDS.length)
+  const done = filled === LLM_CANDS.length
   return (
-    <div style={{ position: 'absolute', left: 22, right: 22, top: 30 }}>
+    <div style={{ position: 'absolute', left: 22, right: 22, top: 26 }}>
       <span className="mini-cap">LLM · 다음에 올 단어를 고르는 중</span>
       <div className="llm-sent">
-        오늘 날씨는{' '}
-        {filled >= 1 && (
-          <motion.b initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-            맑고{' '}
+        {LLM_START}{' '}
+        {LLM_CANDS.slice(0, filled).map(([[w]]) => (
+          <motion.b key={w} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+            {w}{' '}
           </motion.b>
-        )}
-        {filled >= 2 && (
-          <motion.b initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-            따뜻해요
-          </motion.b>
-        )}
-        {filled < 2 && <span className="caret sm" style={{ height: 16 }} />}
+        ))}
+        {!done && <span className="caret sm" style={{ height: 16 }} />}
       </div>
       <AnimatePresence mode="wait">
-        {filled < 2 && (
+        {!done && (
           <motion.div key={filled} className="llm-cands" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
             {LLM_CANDS[filled].map(([w, p], i) => (
               <div key={w} className={'llm-c' + (i === 0 ? ' top' : '')}>
@@ -132,7 +135,7 @@ export function Prompt() {
   )
 }
 
-const TOKENS = ['바이', '브', '코딩', ' 정말', ' 재', '밌다', '!']
+const TOKENS = ['오늘', '은', ' 기초', ' 탄', '탄히', ' 다지', '기', '!']
 export function Token() {
   const k = useTick(3600)
   const step = 0.25
@@ -342,17 +345,18 @@ export function Mcp() {
   )
 }
 
+// 이 핸드북을 만들 때 AI에게 주는 규칙 예시
 const RULES = [
-  ['한국어로 답하기', '한국어로 답변'],
-  ['커밋 전에 테스트', '테스트 후 커밋'],
-  ['색은 주황색만', '주황 버튼 사용'],
+  ['쉬운 비유로 설명', '비유로 설명'],
+  ['요청 문장도 쓰기', '요청 문장 추가'],
+  ['강조색은 주황만', '주황 포인트'],
 ]
 export function RulesFile() {
   const s = useStep(4, 1100)
   return (
     <>
       <div className="rules-file mono">
-        <span className="md-tab">CLAUDE.md</span>
+        <span className="md-tab">코더 작업 규칙.md</span>
         {RULES.map(([r], i) => (
           <div key={r} className={'pj-l' + (i < s ? ' on' : '')}>
             - {r}

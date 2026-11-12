@@ -4,13 +4,31 @@
 
 👉 **https://vibe-coding-handbook-xi.vercel.app/** 에서 바로 볼 수 있어요.
 
-- 카드마다 그 용어가 실제로 어떻게 생기고 움직이는지 애니메이션으로 보여줍니다.
-- 카드를 누르면 비유를 곁들인 쉬운 설명과, AI에게 그대로 복사해 쓸 수 있는 요청 문장이 나옵니다.
-- UI 용어 49개, 디자인 기초 12개, 애니메이션 용어 28개는 값을 바꿔가며 직접 만져볼 수 있고, 바꾼 값에 맞춰 요청 문장도 함께 바뀝니다.
-- JSON, API, Git 브랜치, 토큰처럼 개념을 다루는 용어 19개는 가짜 데이터로 움직이는 시뮬레이터로 체험할 수 있습니다.
-- 처음이라면 튜토리얼 코스 4개를 따라 하면서 AI로 첫 화면을 만들고, GitHub에 저장하고, Vercel로 인터넷에 공개하고, 개발자 도구로 스스로 고치는 데까지 해볼 수 있습니다.
-- 개발자 도구 2개는 실제 크롬 화면을 따라 하는 단계별 안내로 보여주고, DevTools에는 가짜 은행·증권 앱의 숫자를 콘솔로 바꿔보는 실습도 있습니다.
-- "팝업"처럼 다른 이름으로 검색해도 찾을 수 있습니다.
+## 주요 기능
+
+- **움직이는 카드**: 카드마다 그 용어가 실제로 어떻게 생기고 움직이는지 애니메이션으로 보여줍니다.
+- **쉬운 설명과 요청 문장**: 카드를 누르면 비유를 곁들인 설명과, AI에게 그대로 복사해 쓸 수 있는 요청 문장이 나옵니다.
+- **직접 만져보기**: UI 용어 49개, 디자인 기초 12개, 애니메이션 용어 28개는 값을 바꿔가며 만져볼 수 있고, 바꾼 값에 맞춰 요청 문장도 함께 바뀝니다.
+- **시뮬레이터**: JSON, API, Git 브랜치, 토큰처럼 개념을 다루는 용어 19개는 가짜 데이터로 움직이는 시뮬레이터로 체험할 수 있습니다.
+- **개발자 도구 안내**: 실제 크롬 화면을 따라 하는 단계별 안내와, 가짜 은행·증권 앱의 숫자를 콘솔로 바꿔보는 실습이 있습니다.
+- **튜토리얼**: 처음이라면 코스 4개를 따라 하면서 AI로 첫 화면을 만들고, GitHub에 저장하고, Vercel로 인터넷에 공개하고, 개발자 도구로 스스로 고치는 데까지 해볼 수 있습니다.
+- **별명 검색**: "팝업"처럼 다른 이름으로 검색해도 찾을 수 있습니다.
+
+## 설치 방법
+
+[Node.js](https://nodejs.org/)가 설치되어 있어야 합니다. 저장소를 내려받은 폴더에서 아래 명령으로 필요한 부품을 설치합니다.
+
+```bash
+npm install
+```
+
+## 실행 방법
+
+```bash
+npm run dev
+```
+
+http://localhost:4000 에서 열립니다. React, Vite, Motion으로 만들었습니다.
 
 ## 목차
 
@@ -42,11 +60,10 @@
 | 글자와 그림 | Typewriter, Text Scramble, Split Text, Count-up, Line Drawing, Morphing, Marquee, Motion Path |
 | 화면과 마우스 | Page Transition, Shared Element, Pin·Scrollytelling, Horizontal Scroll, Drag & Drop, Magnetic Button, Custom Cursor, 3D Tilt, Confetti |
 
-### 개발 필수 상식 (48)
+### 개발 필수 상식 (43)
 
 | 분류 | 용어 |
 | --- | --- |
-| 파일·형식 | Markdown, README, JSON, .env, package.json |
 | 개념 | Frontend / Backend, API, Database, Component, State, Cookie · Local Storage |
 | 도구·작업 | localhost · Port, Terminal, Commit / Push, Branch, npm install, Build, Deploy, Vercel, Subdomain, SEO · Meta Tag, Domain |
 | GitHub | GitHub / Repository, Public / Private, Access Token, Clone, Pull Request, Merge Conflict, Fork, .gitignore, Diff, Revert / Rollback, GitHub Actions |
@@ -54,18 +71,14 @@
 | 문제 상황 | Cache, CORS, Bug / Debugging, Refactoring, Dependency Conflict, 404 / 500 |
 | 개발자 도구 | DevTools, Console · Error |
 
-### AI 필수 용어 (14)
+### AI 필수 용어 (19)
 
 | 분류 | 용어 |
 | --- | --- |
 | AI 기초 | LLM, Model, Prompt, Token, Context Window, Hallucination |
-| AI 도구 | Vibe Coding, AI Agent, AI Coding Tool, MCP, Rules 파일, Plan Mode, Multimodal, Checkpoint |
+| 파일·형식 | README, Rules 파일, Markdown, JSON, .env, package.json |
+| AI 도구 | Vibe Coding, AI Agent, AI Coding Tool, MCP, Plan Mode, Multimodal, Checkpoint |
 
-## 내 컴퓨터에서 실행하기
+## 만든 사람
 
-```bash
-npm install
-npm run dev
-```
-
-http://localhost:4000 에서 열립니다. React, Vite, Motion으로 만들었습니다.
+제작자: 박지윤 · 출처: 각종 유튜브, 경험, 검색 등
