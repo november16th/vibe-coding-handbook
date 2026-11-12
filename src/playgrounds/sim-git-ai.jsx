@@ -538,21 +538,28 @@ function TokenPG() {
 
 /* ───────── Context Window ───────── */
 
-const MSG_TYPES = {
-  rule: { who: '나', text: '규칙: 색은 주황색만 써줘', size: 40 },
-  ask: { who: '나', text: '버튼 하나 더 만들어줘', size: 30 },
-  code: { who: '나', text: '(긴 코드 300줄 붙여넣기)', size: 320 },
-  reply: { who: 'AI', text: '네, 만들었어요! (코드 포함 답변)', size: 140 },
-}
+// 기억 칸 비유: 말 한 마디는 1칸, 긴 코드는 3칸. 칸이 차면 오래된 말부터 밀려난다
+const RULE_MSG = { who: '나', text: '📌 규칙! 색은 주황색만 써줘', size: 1, rule: true }
+const TALK = [
+  { who: '나', text: '버튼 하나 더 만들어줘', size: 1 },
+  { who: 'AI', text: '네, 만들었어요!', size: 1 },
+  { who: '나', text: '글자 좀 키워줘', size: 1 },
+  { who: 'AI', text: '키웠어요!', size: 1 },
+  { who: '나', text: '사진도 넣어줘', size: 1 },
+  { who: 'AI', text: '넣었어요!', size: 1 },
+]
+const LONG_CODE = { who: '나', text: '(긴 코드 300줄 붙여넣기)', size: 3 }
+const SLOTS = { 4: '작은 AI', 6: '보통 AI', 10: '큰 AI' }
 
 function ContextWindowPG() {
-  const [msgs, setMsgs] = useState([{ ...MSG_TYPES.rule, id: 0 }])
-  const [cap, setCap] = useState(600)
+  const [msgs, setMsgs] = useState([{ ...RULE_MSG, id: 0 }])
+  const [cap, setCap] = useState(6)
   const [answer, setAnswer] = useState(null)
   const [seq, setSeq] = useState(1)
+  const [turn, setTurn] = useState(0)
   const { logs, push, clear } = useEventLog()
 
-  // 최근 메시지부터 용량만큼만 기억
+  // 최근 말부터 칸이 허락하는 만큼만 기억
   let used = 0
   const remembered = new Set()
   for (let i = msgs.length - 1; i >= 0; i--) {
@@ -560,64 +567,97 @@ function ContextWindowPG() {
     used += msgs[i].size
     remembered.add(msgs[i].id)
   }
-  const ruleKept = msgs.some((m) => m.text.startsWith('규칙') && remembered.has(m.id))
-  const forgot = msgs.filter((m) => !remembered.has(m.id)).length
+  const ruleKept = msgs.some((m) => m.rule && remembered.has(m.id))
+  const forgotten = msgs.filter((m) => !remembered.has(m.id))
+  const kept = msgs.filter((m) => remembered.has(m.id))
 
-  const add = (k) => {
-    const m = { ...MSG_TYPES[k], id: seq }
+  const addMsg = (m) => {
+    const next = { ...m, id: seq }
     setSeq(seq + 1)
-    setMsgs([...msgs, m])
+    setMsgs([...msgs, next])
     setAnswer(null)
-    push('child', `${m.who}: ${m.text} (+${m.size} 토큰)`)
+    push('child', `${next.who}: ${next.text} (${next.size}칸)`)
+  }
+  const talk = () => {
+    addMsg(TALK[turn % TALK.length])
+    setTurn(turn + 1)
   }
   const ask = () => {
     setAnswer(ruleKept)
-    push(ruleKept ? 'end' : 'close', ruleKept ? '처음 규칙이 아직 창 안에 있음 → 기억함' : '처음 규칙이 창 밖으로 밀려남 → 잊어버림')
+    push(ruleKept ? 'end' : 'close', ruleKept ? '규칙이 아직 기억 칸 안에 있어서 기억함' : '규칙이 기억 칸 밖으로 밀려나서 잊어버림')
   }
   const summarize = () => {
-    const sum = { who: '요약', text: '요약: 색은 주황색만 · 버튼 작업 중', size: 50, id: seq }
+    setMsgs([{ who: '요약', text: '📌 요약: 색은 주황색만 · 버튼 작업 중', size: 1, rule: true, id: seq }])
     setSeq(seq + 1)
-    setMsgs([sum])
     setAnswer(null)
-    push('settle', `대화 ${msgs.length}개를 요약 1개(50토큰)로 압축 → 새로 시작`)
+    push('settle', `말 ${msgs.length}개를 요약 1칸으로 줄여서 새로 시작`)
+  }
+  const reset = () => {
+    setMsgs([{ ...RULE_MSG, id: seq }])
+    setSeq(seq + 1)
+    setTurn(0)
+    setAnswer(null)
   }
 
   const prompt = `대화가 너무 길어져서 앞에서 정한 규칙을 잊는 것 같아(Context Window). 지금까지 정한 규칙과 진행 상황을 10줄 이내로 요약해줘. 이 요약을 새 대화 맨 처음에 붙여넣고 이어서 작업할게. 앞으로 꼭 지켜야 할 규칙은 따로 표시해줘.`
 
   return (
     <Shell
-      hint="메시지를 계속 보내서 처음 규칙이 밀려나게 해보세요"
+      hint="'대화 이어가기'를 계속 눌러보세요"
       stage={
         <div className="pg-ctx">
-          <div className="pg-ctx-bar">
-            <motion.i animate={{ width: `${Math.min(100, (used / cap) * 100)}%`, background: used / cap > 0.85 ? '#e5484d' : C.acc }} />
-            <span className="mono">
-              기억 중 {used} / {cap} 토큰{forgot ? ` · 잊은 메시지 ${forgot}개` : ''}
+          <ol className="pg-ctx-steps">
+            <li>
+              <b>대화 이어가기</b>를 계속 눌러요
+            </li>
+            <li>
+              기억 칸이 꽉 차면 <b>맨 위의 오래된 말부터</b> 밀려나요
+            </li>
+            <li>
+              <b>"처음 규칙 기억해?"</b>로 물어봐요
+            </li>
+          </ol>
+
+          {forgotten.length > 0 && (
+            <div className="pg-ctx-lost">
+              <span className="pg-ctx-cap">🫥 잊어버린 말 {forgotten.length}개</span>
+              {forgotten.map((m) => (
+                <div key={m.id} className={'pg-ctx-msg gone ' + (m.who === 'AI' ? 'ai' : 'me')}>
+                  {m.text}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className={'pg-ctx-frame' + (used >= cap ? ' full' : '')}>
+            <span className="pg-ctx-cap">
+              🧠 AI가 지금 기억하는 범위
+              <span className="pg-ctx-slots" aria-label={`${cap}칸 중 ${used}칸 사용`}>
+                {Array.from({ length: cap }, (_, i) => (
+                  <i key={i} className={i < used ? 'on' : ''} />
+                ))}
+              </span>
             </span>
-          </div>
-          <div className="pg-ctx-chat">
             <AnimatePresence initial={false}>
-              {msgs.map((m) => (
-                <motion.div layout key={m.id} className={'pg-ctx-msg ' + (m.who === 'AI' ? 'ai' : m.who === '요약' ? 'sum' : 'me') + (remembered.has(m.id) ? '' : ' gone')} initial={{ opacity: 0, y: 10 }} animate={{ opacity: remembered.has(m.id) ? 1 : 0.35, y: 0 }}>
-                  <span>{m.text}</span>
-                  <small className="mono">
-                    {m.size}토큰{remembered.has(m.id) ? '' : ' · 잊음'}
-                  </small>
+              {kept.map((m) => (
+                <motion.div layout key={m.id} className={'pg-ctx-msg ' + (m.who === 'AI' ? 'ai' : m.who === '요약' ? 'sum' : 'me') + (m.size > 1 ? ' big' : '')} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                  {m.text}
+                  {m.size > 1 && <small> · {m.size}칸 차지</small>}
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
+
+          <p className={'pg-ctx-status ' + (ruleKept ? 'ok' : 'bad')}>{ruleKept ? '📌 처음 규칙이 아직 기억 범위 안에 있어요' : '📌 처음 규칙이 밖으로 밀려났어요. 이제 AI는 이 규칙을 몰라요'}</p>
+
           <div className="pg-branch-btns">
-            {[
-              ['ask', '질문'],
-              ['reply', 'AI 답변'],
-              ['code', '긴 코드'],
-            ].map(([k, l]) => (
-              <button key={k} className="btn small ghost" onClick={() => add(k)}>
-                + {l}
-              </button>
-            ))}
-            <button className="btn small" onClick={ask}>
+            <button className="btn small" onClick={talk}>
+              💬 대화 이어가기
+            </button>
+            <button className="btn small ghost" onClick={() => addMsg(LONG_CODE)}>
+              📄 긴 코드 붙여넣기
+            </button>
+            <button className="btn small ghost" onClick={ask}>
               "처음 규칙 기억해?"
             </button>
           </div>
@@ -632,18 +672,23 @@ function ContextWindowPG() {
       }
       controls={
         <>
-          <Slider label="기억할 수 있는 양 (Context Window)" value={cap} min={200} max={1500} step={50} unit="토큰" onChange={setCap} />
-          <button className="btn" onClick={summarize}>
-            요약해서 새로 시작
-          </button>
-          <button
-            className="link"
-            onClick={() => {
-              setMsgs([{ ...MSG_TYPES.rule, id: seq }])
-              setSeq(seq + 1)
+          <Segmented
+            label="AI의 기억 칸 크기"
+            value={cap}
+            onChange={(v) => {
+              setCap(v)
               setAnswer(null)
+              push('option', `${SLOTS[v]}: 기억 칸 ${v}칸`)
             }}
-          >
+            options={Object.entries(SLOTS).map(([v, l]) => ({ value: Number(v), label: `${l} ${v}칸` }))}
+          />
+          <p className="pg-note" style={{ margin: 0 }}>
+            칸이 클수록 오래된 말도 오래 기억해요. 실제로는 칸 대신 토큰 수로 세요.
+          </p>
+          <button className="btn" onClick={summarize}>
+            ✂️ 요약해서 새로 시작
+          </button>
+          <button className="link" onClick={reset}>
             처음으로
           </button>
         </>
