@@ -226,18 +226,6 @@ export const GROUPS = [
     intro: '화면 밖에서 자주 듣는 말이에요. AI가 "이 파일을 만들게요", "배포하세요"라고 할 때 무슨 뜻인지 알 수 있어요.',
     sections: [
       {
-        id: 'files',
-        title: '파일·형식',
-        en: 'Files',
-        items: [
-          t('markdown', 'Markdown', '.md 글쓰기 형식', D.Markdown, '프로젝트 기획을 마크다운(.md) 파일로 정리해줘. # 제목, ## 섹션별 소제목, 할 일은 - [ ] 체크리스트로.', { aka: ['마크다운', '.md', 'md 파일'] }),
-          t('readme', 'README', '프로젝트 설명서', D.Readme, 'README.md를 만들어줘. 프로젝트 소개 한 줄, 주요 기능, 설치 방법(npm install), 실행 방법(npm run dev)을 넣어서.', { aka: ['리드미', 'README.md', '설명서'] }),
-          t('json', 'JSON', '데이터를 담는 형식', D.Json, '상품 목록 데이터를 JSON 파일로 따로 빼줘. 각 상품은 id, name, price, image 필드를 갖게.', { aka: ['제이슨', '.json', '데이터 형식'] }),
-          t('env', '.env', '비밀 설정 파일', D.Env, 'API 키를 코드에 직접 쓰지 말고 .env 파일로 옮겨줘. 그리고 .env는 .gitignore에 추가하고, 예시용 .env.example도 만들어줘.', { aka: ['환경변수', '환경 변수', 'env 파일', 'API 키', '.gitignore'] }),
-          t('package-json', 'package.json', '프로젝트 명세서', D.PackageJson, 'package.json의 scripts에 "dev", "build", "preview" 명령이 있는지 확인하고, 없으면 Vite 기준으로 추가해줘.', { aka: ['패키지 제이슨', 'dependencies', 'scripts', '의존성'] }),
-        ],
-      },
-      {
         id: 'concept',
         title: '개념',
         en: 'Concepts',
@@ -344,6 +332,19 @@ export const GROUPS = [
         ],
       },
       {
+        id: 'files',
+        title: '파일·형식',
+        en: 'Files',
+        items: [
+          t('readme', 'README', '프로젝트 설명서', D.Readme, 'README.md를 만들어줘. 프로젝트 소개 한 줄, 주요 기능, 설치 방법(npm install), 실행 방법(npm run dev)을 넣어서.', { aka: ['리드미', 'README.md', '설명서'] }),
+          t('rules-file', 'Rules 파일', 'AI에게 미리 주는 작업 규칙', A.RulesFile, '바이브 코딩 핸드북 프로젝트용 코더 작업 규칙.md를 만들어줘. 항상 한국어로 답하기, 용어 설명은 쉬운 비유로 쓰기, 새 용어에는 AI에게 복사해 쓸 요청 문장도 넣기, 강조색은 주황색(#FF6B2C)만 쓰기 규칙을 넣어서.', { aka: ['CLAUDE.md', '.cursorrules', 'AGENTS.md', '규칙 파일', '시스템 프롬프트', '메모리'] }),
+          t('markdown', 'Markdown', '.md 글쓰기 형식', D.Markdown, '프로젝트 기획을 마크다운(.md) 파일로 정리해줘. # 제목, ## 섹션별 소제목, 할 일은 - [ ] 체크리스트로.', { aka: ['마크다운', '.md', 'md 파일'] }),
+          t('json', 'JSON', '데이터를 담는 형식', D.Json, '용어 목록 데이터를 JSON 파일로 따로 빼줘. 각 용어는 id, en(영어 이름), ko(한글 설명), group 필드를 갖게.', { aka: ['제이슨', '.json', '데이터 형식'] }),
+          t('env', '.env', '비밀 설정 파일', D.Env, 'API 키를 코드에 직접 쓰지 말고 .env 파일로 옮겨줘. 그리고 .env는 .gitignore에 추가하고, 예시용 .env.example도 만들어줘.', { aka: ['환경변수', '환경 변수', 'env 파일', 'API 키', '.gitignore'] }),
+          t('package-json', 'package.json', '프로젝트 명세서', D.PackageJson, 'package.json의 scripts에 "dev", "build", "preview" 명령이 있는지 확인하고, 없으면 Vite 기준으로 추가해줘.', { aka: ['패키지 제이슨', 'dependencies', 'scripts', '의존성'] }),
+        ],
+      },
+      {
         id: 'ai-tools',
         title: 'AI 도구',
         en: 'AI Tools',
@@ -352,7 +353,6 @@ export const GROUPS = [
           t('ai-agent', 'AI Agent', '스스로 일을 처리하는 AI', A.AiAgent, '로그인 버그를 고쳐줘. 관련 파일을 찾아보고, 고친 다음 직접 실행해서 확인하고, 무엇을 바꿨는지 보고해줘.', { aka: ['에이전트', 'AI 에이전트', '에이전틱', '자동 실행'] }),
           t('ai-coding-tool', 'AI Coding Tool', 'AI가 들어간 코딩 프로그램', A.AiCodingTool, '이 프로젝트 구조를 먼저 훑어보고, 버튼 색을 주황색으로 바꾸는 데 어떤 파일을 고쳐야 하는지 알려준 다음 수정해줘.', { aka: ['Claude Code', '클로드 코드', 'Cursor', '커서', 'Copilot', 'AI 에디터'] }),
           t('mcp', 'MCP', 'AI에 도구를 꽂는 표준 콘센트', A.Mcp, '노션 MCP를 연결해서, 노션에 정리된 기획 문서를 읽고 그대로 화면을 만들어줘.', { aka: ['엠씨피', 'Model Context Protocol', '커넥터', '도구 연결', '플러그인'] }),
-          t('rules-file', 'Rules 파일', 'AI에게 미리 주는 작업 규칙', A.RulesFile, '이 프로젝트용 CLAUDE.md를 만들어줘. 항상 한국어로 답하기, 커밋 전에 빌드 확인, 색은 주황색 계열만 쓰기 규칙을 넣어서.', { aka: ['CLAUDE.md', '.cursorrules', 'AGENTS.md', '규칙 파일', '시스템 프롬프트', '메모리'] }),
           t('plan-mode', 'Plan Mode', '만들기 전에 계획 먼저', X.PlanMode, '바로 만들지 말고 먼저 계획부터 세워줘. 어떤 파일을 어떻게 바꿀지 순서대로 정리해서 보여주고, 내가 좋다고 하면 그때 진행해.', { aka: ['플랜 모드', '계획 모드', '계획 먼저', 'plan'] }),
           t('multimodal', 'Multimodal', '사진으로도 말하기', X.Multimodal, '이 스크린샷 화면처럼 만들고 싶어. 화면에 어떤 부품(용어)이 있는지 먼저 이름을 알려주고, 같은 구조로 만들어줘.', { aka: ['멀티모달', '이미지 입력', '스크린샷', '사진 첨부', '이미지 인식'] }),
           t('checkpoint', 'Checkpoint', 'AI 작업 되감기 지점', X.Checkpoint, '방금 요청한 변경이 마음에 안 들어. 그 전 체크포인트로 되감아 줘.', { aka: ['체크포인트', '되감기', 'rewind', '실행 취소', '복원 지점'] }),
