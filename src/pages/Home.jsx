@@ -73,8 +73,8 @@ const INTRO = '바이브코딩하다 모르는 말이 나오면 찾아보는 용
 
 const count = (g) => g.sections.reduce((m, s) => m + s.items.length, 0)
 
-// 상단 탭: 맨 앞은 '튜토리얼', 그 뒤로 용어 그룹
-const TABS = [{ id: 'tutorial', short: '튜토리얼' }, ...GROUPS.map((g) => ({ id: g.id, short: g.short, n: count(g) }))]
+// 상단 탭: 용어 그룹 다음 맨 끝이 '튜토리얼'
+const TABS = [...GROUPS.map((g) => ({ id: g.id, short: g.short, n: count(g) })), { id: 'tutorial', short: '튜토리얼' }]
 
 function useActiveGroup() {
   const [active, setActive] = useState(TABS[0].id)
@@ -190,7 +190,6 @@ export default function Home() {
           </section>
         ) : (
           <>
-            <TutorialSection views={stats?.views} />
             {GROUPS.map((g) => (
             <section key={g.id} id={g.id} className="group">
               <div className="group-head">
@@ -216,6 +215,7 @@ export default function Home() {
               ))}
             </section>
             ))}
+            <TutorialSection views={stats?.views} />
           </>
         )}
       </main>
