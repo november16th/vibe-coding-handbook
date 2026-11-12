@@ -2,7 +2,7 @@
 
 코딩을 몰라도 AI에게 정확히 말할 수 있도록, 바이브코딩에 자주 나오는 용어 151개를 **움직이는 카드**로 정리한 사이트입니다.
 
-👉 **https://vibe-coding-handbook-xi.vercel.app/** 에서 바로 볼 수 있어요.
+👉 **https://vibecodinghandbook.midastouch-jiyoonpark-dashboard.shop/** 에서 바로 볼 수 있어요.
 
 ## 주요 기능
 
