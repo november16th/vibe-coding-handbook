@@ -1,9 +1,10 @@
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration, useLocation } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration, useLocation, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Detail from './pages/Detail'
 import Tutorial from './pages/Tutorial'
+import { SHOW_TUTORIAL } from './tutorial'
 import './styles.css'
 
 // "/#section" 으로 돌아왔을 때 해당 섹션으로 이동
@@ -33,8 +34,9 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Home /> },
       { path: '/term/:id', element: <Detail /> },
-      { path: '/tutorial/:course', element: <Tutorial /> },
-      { path: '/tutorial/:course/:step', element: <Tutorial /> },
+      // 튜토리얼을 숨긴 동안에는 주소로 들어와도 홈으로 보낸다
+      { path: '/tutorial/:course', element: SHOW_TUTORIAL ? <Tutorial /> : <Navigate to="/" replace /> },
+      { path: '/tutorial/:course/:step', element: SHOW_TUTORIAL ? <Tutorial /> : <Navigate to="/" replace /> },
     ],
   },
 ])

@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { GROUPS, searchTerms } from '../terms'
 import { Stage, Icon, TutorialDemo } from '../demos/parts'
-import { TUTORIALS } from '../tutorial'
+import { TUTORIALS, SHOW_TUTORIAL } from '../tutorial'
 import { useStats } from '../stats'
 
-const viewLabel = (n) => (n == null ? '' : `조회 ${n.toLocaleString()} · `)
+// 카드 오른쪽 위: 조회수만 (숫자를 못 불러오면 아무것도 안 보인다)
+const ViewCount = ({ n }) => (n == null ? null : <span className="card-no mono">조회수 {n.toLocaleString()}</span>)
 
 export function TermCard({ term, alias, views }) {
   const { Demo } = term
@@ -22,10 +23,7 @@ export function TermCard({ term, alias, views }) {
         <p>{term.ko}</p>
         {alias && <p className="card-alias">'{alias}'(으)로도 불려요</p>}
       </div>
-      <span className="card-no mono">
-        {viewLabel(views)}
-        {term.no}
-      </span>
+      <ViewCount n={views} />
     </Link>
   )
 }
@@ -45,10 +43,7 @@ function TutorialCard({ tut, course, views }) {
           {tut.subtitle} · {tut.steps.length}단계
         </p>
       </div>
-      <span className="card-no mono">
-        {viewLabel(views)}
-        {String(course).padStart(2, '0')}
-      </span>
+      <ViewCount n={views} />
     </Link>
   )
 }
@@ -74,7 +69,7 @@ const INTRO = '바이브코딩하다 모르는 말이 나오면 찾아보는 용
 const count = (g) => g.sections.reduce((m, s) => m + s.items.length, 0)
 
 // 상단 탭: 용어 그룹 다음 맨 끝이 '튜토리얼'
-const TABS = [...GROUPS.map((g) => ({ id: g.id, short: g.short, n: count(g) })), { id: 'tutorial', short: '튜토리얼' }]
+const TABS = [...GROUPS.map((g) => ({ id: g.id, short: g.short, n: count(g) })), ...(SHOW_TUTORIAL ? [{ id: 'tutorial', short: '튜토리얼' }] : [])]
 
 function useActiveGroup() {
   const [active, setActive] = useState(TABS[0].id)
@@ -215,7 +210,7 @@ export default function Home() {
               ))}
             </section>
             ))}
-            <TutorialSection views={stats?.views} />
+            {SHOW_TUTORIAL && <TutorialSection views={stats?.views} />}
           </>
         )}
       </main>

@@ -8,6 +8,9 @@
 // prev: 앞 코스에서 이어지는 코스의 첫 단계에 보여줄 안내
 //   walk: 따라 하기 순서. text는 문단 배열이고 **굵게**를 쓸 수 있다.
 //         shot은 public/tutorial/ 아래 스크린샷 파일 이름으로, SHOTS에 있을 때만 보여준다.
+// 사내 강의에서 외부 호스팅(Vercel·GitHub 공개 등) 안내가 보안에 걸려 잠시 숨긴다. true로 바꾸면 다시 보인다
+export const SHOW_TUTORIAL = false
+
 export const TUTORIALS = [
   {
     title: '왕초보라면 여기부터 1',
