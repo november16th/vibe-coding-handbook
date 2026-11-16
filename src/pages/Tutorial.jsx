@@ -80,16 +80,7 @@ export default function Tutorial() {
               </Link>
             </div>
           )}
-          {lesson.intro && (
-            <div className="tut-intro">
-              <p className="tut-lead">{lesson.intro.text}</p>
-              {SHOTS.has(lesson.intro.shot) && (
-                <a className="tut-walk-img" href={`/tutorial/${lesson.intro.shot}`} target="_blank" rel="noreferrer" title="크게 보기">
-                  <img src={`/tutorial/${lesson.intro.shot}`} alt="VIBE CODING HANDBOOK 첫 화면" loading="lazy" />
-                </a>
-              )}
-            </div>
-          )}
+          {lesson.intro && <p className="tut-lead">{lesson.intro}</p>}
           <p className="tut-lead">{lesson.lead}</p>
 
           {hasTask && (

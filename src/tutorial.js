@@ -2,7 +2,7 @@
 // 1에서 내 컴퓨터에 첫 화면을 만들고, 2에서 Git·GitHub로 저장하고, 3에서 인터넷에 공개하고,
 // 4에서 개발자 도구로 혼자 화면을 살피고 고치는 법을 익힌다.
 // 각 단계는 기존 용어(term id) 하나와 짝을 이룬다.
-//   intro: lead 위에 보여줄 코스 소개 { text, shot }
+//   intro: lead 위에 보여줄 코스 소개 글
 //   lead: 이 용어를 지금 배우는 이유
 //   todo / links / prompt / stuck: 직접 해볼 일이 있는 단계에만
 // prev: 앞 코스에서 이어지는 코스의 첫 단계에 보여줄 안내 (앞 코스가 잠겨 있으면 숨긴다)
@@ -263,10 +263,7 @@ export const TUTORIALS = [
       {
         term: 'devtools',
         chapter: '개발자 도구 열기',
-        intro: {
-          text: "'왕초보라면 여기부터 1~3 시리즈'를 마쳤다면 바이브 코딩의 기초는 이미 갖춘 거예요! 이제부터는 VIBE CODING HANDBOOK의 UI, 디자인, 개발 상식 같은 여러 섹션을 둘러보고, 마음에 드는 걸 직접 만들어 보며 배우는 즐거운 과정이 남아 있어요. 이번 코스에서는 그 과정을 더 잘하기 위한 팁 2가지를 알려드릴게요.",
-          shot: 'vibe-coding-handbook.png',
-        },
+        intro: "'왕초보라면 여기부터 1~3 시리즈'를 마쳤다면 바이브 코딩의 기초는 이미 갖춘 거예요! 이제부터는 VIBE CODING HANDBOOK의 UI, 디자인, 개발 상식 같은 여러 섹션을 둘러보고, 마음에 드는 걸 직접 만들어 보며 배우는 즐거운 과정이 남아 있어요. 이번 코스에서는 그 과정을 더 잘하기 위한 팁 2가지를 알려드릴게요.",
         lead: '"이 부분을 고쳐줘"라고 말해도 AI가 어디를 말하는지 못 알아들을 때가 있어요. 이럴 때 개발자 도구를 쓰면 화면의 특정 부분을 콕 집어 AI에게 보여줄 수 있어요. 크롬 같은 브라우저에 이미 들어 있어서 따로 설치할 필요가 없고, 아래 안내를 따라 내 사이트에서 한 번씩 열어보면 돼요.',
       },
       {
@@ -292,7 +289,6 @@ export const SHOTS = new Set([
   'vercel/vercel-deploy-10.png',
   'vercel/vercel-deploy-11.png',
   'localhost-my-shop.png',
-  'vibe-coding-handbook.png',
   'gh-token-1-settings.png',
   'gh-token-2-developer-settings.png',
   'gh-token-3-generate.png',
