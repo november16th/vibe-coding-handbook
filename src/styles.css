@@ -1985,3 +1985,12 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .card-locked .stage-inner { filter: blur(6px); opacity: 0.7; }
 .card-lock { position: absolute; left: 10px; right: 10px; top: 10px; aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1; }
 .card-lock svg { box-sizing: content-box; padding: 14px; border-radius: 99px; background: var(--surface); color: var(--ink); box-shadow: 0 6px 18px rgba(40, 30, 10, 0.12); }
+
+/* 잠긴 코스 안내 창 */
+.lock-notice { width: min(500px, 100%); background: var(--surface); border-radius: 22px; padding: 26px 26px 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25); }
+.lock-notice-icon { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 99px; background: var(--acc-soft); color: var(--acc); }
+.lock-notice h2 { margin: 14px 0 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
+.lock-notice p { margin: 0 0 12px; font-size: 14.5px; line-height: 1.7; color: #45423c; word-break: keep-all; }
+.lock-notice strong { color: var(--ink); font-weight: 750; }
+.lock-notice-btns { display: flex; justify-content: flex-end; margin-top: 18px; }
+.lock-notice-btns .btn { min-width: 88px; }

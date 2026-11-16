@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { GROUPS, searchTerms } from '../terms'
 import { Stage, Icon, TutorialDemo } from '../demos/parts'
-import { TUTORIALS, SHOW_TUTORIAL, LOCKED_MSG } from '../tutorial'
+import { TUTORIALS, SHOW_TUTORIAL } from '../tutorial'
+import LockNoticeModal from '../components/LockNoticeModal'
 import { useStats } from '../stats'
 
 // 카드 오른쪽 위: 조회수만 (숫자를 못 불러오면 아무것도 안 보인다)
@@ -29,11 +30,11 @@ export function TermCard({ term, alias, views }) {
 }
 
 // 튜토리얼 코스 카드. 잠긴 코스는 썸네일을 흐리게 하고 눌러도 열리지 않는다
-function TutorialCard({ tut, course, views }) {
+function TutorialCard({ tut, course, views, onLocked }) {
   const onClick = tut.locked
     ? (e) => {
         e.preventDefault()
-        alert(LOCKED_MSG)
+        onLocked()
       }
     : undefined
   return (
@@ -60,6 +61,8 @@ function TutorialCard({ tut, course, views }) {
 }
 
 function TutorialSection({ views }) {
+  const [notice, setNotice] = useState(false)
+  const closeNotice = useCallback(() => setNotice(false), [])
   return (
     <section id="tutorial" className="group">
       <div className="group-head">
@@ -70,9 +73,10 @@ function TutorialSection({ views }) {
       </div>
       <div className="grid" style={{ marginTop: 16 }}>
         {TUTORIALS.map((tut, i) => (
-          <TutorialCard key={tut.title} tut={tut} course={i + 1} views={views && (views[`tutorial-${i + 1}`] ?? 0)} />
+          <TutorialCard key={tut.title} tut={tut} course={i + 1} views={views && (views[`tutorial-${i + 1}`] ?? 0)} onLocked={() => setNotice(true)} />
         ))}
       </div>
+      <LockNoticeModal open={notice} onClose={closeNotice} />
     </section>
   )
 }
