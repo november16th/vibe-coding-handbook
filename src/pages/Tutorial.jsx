@@ -36,7 +36,8 @@ export default function Tutorial() {
   const lesson = tut?.steps[n - 1]
   const stats = useStats(tut ? `tutorial-${c}` : undefined)
 
-  if (!tut) return <Navigate to="/#tutorial" replace />
+  // 잠긴 코스는 주소로 들어와도 홈의 튜토리얼 목록으로 돌려보낸다
+  if (!tut || tut.locked) return <Navigate to="/#tutorial" replace />
   if (!lesson) return <Navigate to={`/tutorial/${c}/1`} replace />
 
   const total = tut.steps.length
@@ -44,6 +45,7 @@ export default function Tutorial() {
   const last = n === total
   const nextTut = TUTORIALS[c]
   const hasTask = lesson.walk || lesson.todo || lesson.prompt
+  const prevTut = TUTORIALS[c - 2]
 
   return (
     <>
@@ -67,14 +69,14 @@ export default function Tutorial() {
               <PageViews stats={stats} id={`tutorial-${c}`} />
             </div>
           )}
-          {tut.prev && n === 1 && (
+          {tut.prev && n === 1 && prevTut && !prevTut.locked && (
             <div className="tut-prev-course">
               <p>
                 <b>🔗 이어지는 코스예요</b>
                 {tut.prev}
               </p>
               <Link to={`/tutorial/${c - 1}/1`} className="btn">
-                {TUTORIALS[c - 2].title} 시작하기 →
+                {prevTut.title} 시작하기 →
               </Link>
             </div>
           )}

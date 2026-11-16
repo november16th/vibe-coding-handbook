@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { GROUPS, searchTerms } from '../terms'
 import { Stage, Icon, TutorialDemo } from '../demos/parts'
-import { TUTORIALS, SHOW_TUTORIAL } from '../tutorial'
+import { TUTORIALS, SHOW_TUTORIAL, LOCKED_MSG } from '../tutorial'
 import { useStats } from '../stats'
 
 // 카드 오른쪽 위: 조회수만 (숫자를 못 불러오면 아무것도 안 보인다)
@@ -28,13 +28,24 @@ export function TermCard({ term, alias, views }) {
   )
 }
 
-// 튜토리얼 코스 카드
+// 튜토리얼 코스 카드. 잠긴 코스는 썸네일을 흐리게 하고 눌러도 열리지 않는다
 function TutorialCard({ tut, course, views }) {
+  const onClick = tut.locked
+    ? (e) => {
+        e.preventDefault()
+        alert(LOCKED_MSG)
+      }
+    : undefined
   return (
-    <Link to={`/tutorial/${course}/1`} className="card">
+    <Link to={`/tutorial/${course}/1`} className={'card' + (tut.locked ? ' card-locked' : '')} onClick={onClick} aria-disabled={tut.locked || undefined}>
       <Stage>
         <TutorialDemo road={tut.road} title={tut.subtitle} />
       </Stage>
+      {tut.locked && (
+        <span className="card-lock" aria-label="잠긴 코스">
+          <Icon n="lock" size={22} w={2.2} />
+        </span>
+      )}
       <div className="card-body">
         <div className="card-title">
           <h4>{tut.title}</h4>
@@ -52,7 +63,9 @@ function TutorialSection({ views }) {
   return (
     <section id="tutorial" className="group">
       <div className="group-head">
-        <h2>튜토리얼</h2>
+        <h2>
+          튜토리얼 <span className="mono">{TUTORIALS.length}</span>
+        </h2>
         <p>코딩을 처음 해본다면 1번부터 차례로 따라오세요. 용어를 하나씩 배우면서 내 홈페이지를 만들고, 저장하고, 인터넷에 공개하는 데까지 가요.</p>
       </div>
       <div className="grid" style={{ marginTop: 16 }}>
@@ -68,8 +81,8 @@ const INTRO = '바이브코딩하다 모르는 말이 나오면 찾아보는 용
 
 const count = (g) => g.sections.reduce((m, s) => m + s.items.length, 0)
 
-// 상단 탭: 용어 그룹 다음 맨 끝이 '튜토리얼'
-const TABS = [...GROUPS.map((g) => ({ id: g.id, short: g.short, n: count(g) })), ...(SHOW_TUTORIAL ? [{ id: 'tutorial', short: '튜토리얼' }] : [])]
+// 상단 탭: 맨 앞이 '튜토리얼', 그다음 용어 그룹
+const TABS = [...(SHOW_TUTORIAL ? [{ id: 'tutorial', short: '튜토리얼', n: TUTORIALS.length }] : []), ...GROUPS.map((g) => ({ id: g.id, short: g.short, n: count(g) }))]
 
 function useActiveGroup() {
   const [active, setActive] = useState(TABS[0].id)
@@ -185,6 +198,7 @@ export default function Home() {
           </section>
         ) : (
           <>
+            {SHOW_TUTORIAL && <TutorialSection views={stats?.views} />}
             {GROUPS.map((g) => (
             <section key={g.id} id={g.id} className="group">
               <div className="group-head">
@@ -210,7 +224,6 @@ export default function Home() {
               ))}
             </section>
             ))}
-            {SHOW_TUTORIAL && <TutorialSection views={stats?.views} />}
           </>
         )}
       </main>

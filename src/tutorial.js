@@ -5,15 +5,18 @@
 //   intro: lead 위에 보여줄 코스 소개 { text, shot }
 //   lead: 이 용어를 지금 배우는 이유
 //   todo / links / prompt / stuck: 직접 해볼 일이 있는 단계에만
-// prev: 앞 코스에서 이어지는 코스의 첫 단계에 보여줄 안내
+// prev: 앞 코스에서 이어지는 코스의 첫 단계에 보여줄 안내 (앞 코스가 잠겨 있으면 숨긴다)
+// locked: 보안정책으로 잠근 코스. 카드는 흐리게 잠금 표시만 하고, 눌러도 열리지 않는다
 //   walk: 따라 하기 순서. text는 문단 배열이고 **굵게**를 쓸 수 있다.
 //         shot은 public/tutorial/ 아래 스크린샷 파일 이름으로, SHOTS에 있을 때만 보여준다.
 // 사내 강의에서 외부 호스팅(Vercel·GitHub 공개 등) 안내가 보안에 걸려 잠시 숨긴다. true로 바꾸면 다시 보인다
 export const SHOW_TUTORIAL = true
+export const LOCKED_MSG = '보안정책으로 잠금된 게시물입니다.'
 
 export const TUTORIALS = [
   {
     title: '왕초보라면 여기부터 1',
+    locked: true,
     subtitle: 'AI로 내 컴퓨터에 첫 화면 만들기',
     road: ['시작', '준비', '만들기', '열어보기'],
     finish: '내 컴퓨터에 첫 화면이 생겼어요! 다음 코스에서는 만든 걸 잃어버리지 않게 저장하는 법을 배워요.',
@@ -73,6 +76,7 @@ export const TUTORIALS = [
   },
   {
     title: '왕초보라면 여기부터 2',
+    locked: true,
     subtitle: 'Git과 GitHub로 안전하게 저장하기',
     prev: '왕초보라면 여기부터 1에서 이어지는 코스예요. 1에서 만든 가게 소개 페이지를 잃어버리지 않게 저장하는 법을 배워요. 아직 1을 하지 않았다면 먼저 1부터 해주세요.',
     road: ['GitHub', '공개범위', '토큰', '연결', '올리기'],
@@ -181,6 +185,7 @@ export const TUTORIALS = [
   },
   {
     title: '왕초보라면 여기부터 3',
+    locked: true,
     subtitle: 'Vercel로 인터넷에 공개하기',
     prev: '왕초보라면 여기부터 2에서 이어지는 코스예요. 2에서 GitHub에 올려둔 가게 소개 페이지를 인터넷에 공개해요. 아직 2를 하지 않았다면 먼저 2부터 해주세요.',
     road: ['가입', '연결', '배포'],
