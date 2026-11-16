@@ -80,7 +80,7 @@ export function Readme() {
             <span style={{ fontSize: 8.5, color: '#57534b' }}>바이브코딩 용어 151개를 움직이는 카드로 정리한 사이트예요.</span>
             <b className="repo-h">주요 기능</b>
             <span className="repo-li">· 움직이는 카드 · 쉬운 설명 · 요청 문장</span>
-            <span className="repo-li">· 직접 만져보기 · 개발자 도구 안내</span>
+            <span className="repo-li">· 직접 만져보기 · 튜토리얼</span>
             <b className="repo-h">설치 · 실행 방법</b>
             <span className="code-mini mono">npm install && npm run dev</span>
           </motion.div>
