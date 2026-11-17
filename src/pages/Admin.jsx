@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getTerm } from '../terms'
 import { TUTORIALS } from '../tutorial'
+import TrendChart from '../components/TrendChart'
 
 // 관리자만 보는 사용 지표. 비밀번호(Vercel 환경변수 ADMIN_TOKEN)를 넣어야 숫자를 불러온다.
 // 비밀번호는 이 브라우저에만 저장하고, 다른 곳에는 보내지 않는다.
@@ -118,7 +119,7 @@ export default function Admin() {
 
       <main className="wrap admin">
         <div className="admin-head">
-          <h1>사용 지표</h1>
+          <h1>User Activity Analytics</h1>
           {token && (
             <button className="btn small" onClick={logout}>
               로그아웃
@@ -141,6 +142,7 @@ export default function Admin() {
               <p className="admin-hint">
                 재방문은 전에 다른 날 와본 브라우저예요. 복사는 "AI에게 할 말" 복사 버튼을 누른 횟수예요. 14일 합계: 방문 {sum('visits')} · 재방문 {sum('returning')} ({pct(sum('returning'), sum('visits'))}) · 복사 {sum('copies')} · 검색 {sum('searches')}
               </p>
+              <TrendChart daily={data.daily} />
               <div className="admin-table-wrap">
                 <table className="admin-table">
                   <thead>
