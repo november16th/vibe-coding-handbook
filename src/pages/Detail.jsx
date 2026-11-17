@@ -11,12 +11,17 @@ import { useStats, CopyName } from '../stats'
 import ReadmeModal from '../components/ReadmeModal'
 import TermReactions from '../components/TermReactions'
 
-// 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수
+// 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수. 옆의 좋아요·의견과 같은 크기의 눈 아이콘 (Lucide eye, ISC 라이선스)
 export function PageViews({ stats, id }) {
   if (!stats) return null
+  const n = (stats.views[id] ?? 0).toLocaleString()
   return (
-    <span className="page-views">
-      <b>조회수</b> {(stats.views[id] ?? 0).toLocaleString()}
+    <span className="page-views" title="조회수" aria-label={`조회수 ${n}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+      <span className="mono">{n}</span>
     </span>
   )
 }
