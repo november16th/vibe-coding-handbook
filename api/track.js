@@ -3,7 +3,7 @@ import { redis, koreaDate, json } from './_lib.js'
 // 실제로 쓰이는지 알려주는 신호를 기록만 한다. 여기서는 아무 숫자도 돌려주지 않고,
 // 모은 숫자는 비밀번호가 있어야 열리는 /api/admin 에서만 볼 수 있다.
 //   { copy: 'Hero Section' }        요청 문장 복사 (화면의 제목 그대로, 튜토리얼은 '코스 이름 N단계')
-//   { search: '팝업', hits: 3 }      검색어와 결과 개수. 결과가 0개면 따로도 센다. 최근 50개는 시간순으로도 남긴다
+//   { search: '팝업', hits: 3 }      검색어와 결과 개수. 결과가 0개면 따로도 센다
 
 // 제목은 대소문자·띄어쓰기를 그대로 둔다. 줄바꿈 같은 제어 문자만 막는다
 const cleanName = (n) => (typeof n === 'string' && !/[\u0000-\u001f]/.test(n) ? n.trim().slice(0, 60) : '')
@@ -23,7 +23,6 @@ async function record(request) {
     const q = cleanQuery(body.search)
     pipeline.hincrby('searches', q, 1).incr(`searches:${day}`)
     if (body.hits === 0) pipeline.hincrby('searches:miss', q, 1)
-    pipeline.lpush('searches:recent', JSON.stringify({ q, hits: body.hits, at: new Date().toISOString() })).ltrim('searches:recent', 0, 49)
   } else {
     return json({ error: 'bad request' }, 400)
   }

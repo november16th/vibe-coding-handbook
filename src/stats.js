@@ -12,6 +12,7 @@ const FAKE_STATS = ENABLED
       today: 1234,
       total: 1234,
       views: new Proxy({}, { get: () => 1234 }),
+      likes: new Proxy({}, { get: () => 12 }),
     }
 
 // 시크릿 창 등에서 저장소 접근이 막혀도 화면은 멈추지 않게 한다
@@ -91,3 +92,11 @@ export function track(event) {
 
 // 복사 기록에 남길 이름. 용어 페이지는 'Hero Section'처럼 화면의 제목 그대로, 튜토리얼은 '코스 이름 N단계'
 export const CopyName = createContext(null)
+
+// 좋아요·의견 보내기. 좋아요는 바뀐 숫자를 받아 와야 해서 응답을 기다린다. 개발 화면에서는 보내지 않는다
+export async function postFeedback(body) {
+  if (!ENABLED) return null
+  const res = await fetch('/api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  if (!res.ok) throw new Error('feedback failed')
+  return res.status === 204 ? null : res.json()
+}

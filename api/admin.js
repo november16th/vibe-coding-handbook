@@ -46,11 +46,9 @@ async function report() {
   const days = recentDays()
   const pipeline = redis.pipeline()
   pipeline.hgetall('copies').hgetall('searches').hgetall('searches:miss').hgetall('views')
+  pipeline.hgetall('likes').lrange('feedback:comments', 0, 99)
   for (const d of days) pipeline.get(`visits:${d}`).get(`returning:${d}`).get(`copies:${d}`).get(`searches:${d}`)
-  pipeline.lrange('searches:recent', 0, 19)
-  const [copies, searches, misses, views, ...rest] = await pipeline.exec()
-  const daily = rest.slice(0, -1)
-  const recent = rest.at(-1)
+  const [copies, searches, misses, views, likes, comments, ...daily] = await pipeline.exec()
 
   return json({
     daily: days.map((day, i) => {
@@ -61,9 +59,8 @@ async function report() {
     searches: top(searches),
     misses: top(misses),
     views: top(views),
-    recent: (recent ?? []).map(parseJson).filter(Boolean),
-    // 한 번이라도 본 페이지 이름 전부. 아직 아무도 안 본 용어를 찾는 데 쓴다
-    viewed: Object.keys(views ?? {}).filter((k) => Number(views[k]) > 0),
+    likes: top(likes).filter((r) => r.count > 0),
+    comments: (comments ?? []).map(parseJson).filter(Boolean),
   })
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getTerm, TERMS } from '../terms'
+import { getTerm } from '../terms'
 import { TUTORIALS } from '../tutorial'
 import TrendChart from '../components/TrendChart'
 
@@ -55,50 +55,28 @@ function Ranking({ title, hint, rows, name = (k) => k }) {
   )
 }
 
-// 가장 최근 검색 20개. 시간순(최신이 위)
-function Recent({ rows = [] }) {
-  return (
-    <section className="admin-card">
-      <h2>최근 검색어</h2>
-      <p className="admin-hint">가장 최근 20개, 최신이 위예요. 오른쪽은 검색 결과 개수예요</p>
-      {rows.length ? (
-        <ul className="admin-rank admin-recent">
-          {rows.map((r, i) => (
-            <li key={r.at + i}>
-              <span>{r.q}</span>
-              <em className="mono">{new Date(r.at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</em>
-              <b className={'mono' + (r.hits === 0 ? ' admin-miss' : '')}>{r.hits === 0 ? '없음' : `${r.hits}개`}</b>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="admin-empty">아직 기록이 없어요.</p>
-      )}
-    </section>
-  )
-}
-
-// 조회수가 0인 용어. 이름을 바꾸거나 별명을 더하거나 뺄지 고민할 후보
-function Unseen({ viewed = [] }) {
-  const seen = new Set(viewed)
-  const rows = TERMS.filter((t) => !seen.has(t.id))
+// 상세 페이지 말풍선으로 받은 의견. 최신이 위
+function Comments({ rows }) {
   return (
     <section className="admin-card">
       <h2>
-        아직 아무도 안 본 용어 <span className="mono admin-count">{rows.length}</span>
+        받은 의견 <span className="mono admin-count">{rows.length}</span>
       </h2>
-      <p className="admin-hint">전체 {TERMS.length}개 중 조회수가 0인 용어예요. 이름을 쉽게 바꾸거나 별명을 더할 후보예요</p>
+      <p className="admin-hint">최근 100개, 최신이 위예요</p>
       {rows.length ? (
-        <ul className="admin-rank admin-unseen">
-          {rows.map((t) => (
-            <li key={t.id}>
-              <span>{t.en}</span>
-              <em>{t.section.title}</em>
+        <ul className="admin-comments">
+          {rows.map((c, i) => (
+            <li key={c.at + i}>
+              <div className="admin-comment-meta">
+                <b>{placeName(c.term)}</b>
+                <span className="mono">{new Date(c.at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+              </div>
+              <p>{c.text}</p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="admin-empty">모든 용어가 한 번 이상 조회됐어요.</p>
+        <p className="admin-empty">아직 받은 의견이 없어요.</p>
       )}
     </section>
   )
@@ -170,19 +148,15 @@ export default function Admin() {
           <Link to="/" className="logo">
             VIBE CODING HANDBOOK
           </Link>
-        </div>
-      </header>
-
-      <main className="wrap admin">
-        <div className="admin-head">
-          <h1>User Activity Analytics</h1>
           {token && (
-            <button className="btn small" onClick={logout}>
+            <button className="btn small admin-logout" onClick={logout}>
               로그아웃
             </button>
           )}
         </div>
+      </header>
 
+      <main className="wrap admin">
         {!token && (
           <form className="admin-login" onSubmit={submit}>
             <input type="password" value={input} onChange={(e) => setInput(e.target.value)} placeholder="관리자 비밀번호" autoComplete="current-password" />
@@ -232,8 +206,8 @@ export default function Admin() {
               <Ranking title="많이 찾은 검색어" hint="타이핑을 멈춘 뒤의 검색어만 세요" rows={data.searches} />
               <Ranking title="결과가 없던 검색어" hint="사이트에 없는 것. 다음에 추가할 용어 후보예요" rows={data.misses} />
               <Ranking title="많이 본 페이지" hint="카드 조회수 (화면에 보이는 숫자와 같아요)" rows={data.views} name={placeName} />
-              <Unseen viewed={data.viewed} />
-              <Recent rows={data.recent} />
+              <Ranking title="좋아요 많은 용어" hint="상세 페이지의 하트. 화면에 보이는 숫자와 같아요" rows={data.likes ?? []} name={placeName} />
+              <Comments rows={data.comments ?? []} />
             </div>
           </>
         )}
