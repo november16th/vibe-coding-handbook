@@ -1,18 +1,14 @@
-import { Redis } from '@upstash/redis'
+import { redis, koreaDate, json } from './_lib.js'
 
-// 접속 정보는 Vercel 환경변수(KV_REST_API_URL, KV_REST_API_TOKEN)에서 읽는다
-const redis = Redis.fromEnv()
-
-const koreaDate = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' })
-
-const json = (data, status = 200) =>
-  Response.json(data, { status, headers: { 'Cache-Control': 'no-store' } })
+// 화면에 보이는 방문자·조회수. 누구나 읽을 수 있으니 관리자용 숫자는 여기서 돌려주지 않는다
 
 // 기록과 읽기를 파이프라인 하나로 묶어 Upstash를 한 번만 왕복한다
-async function run({ visit, view } = {}) {
+async function run({ visit, returning, view } = {}) {
   const day = koreaDate()
   const pipeline = redis.pipeline()
   if (visit) pipeline.incr('visits:total').incr(`visits:${day}`)
+  // 전에 다른 날 와본 브라우저의 방문. 관리자 화면에서만 본다
+  if (visit && returning) pipeline.incr(`returning:${day}`)
   if (view) pipeline.hincrby('views', view, 1)
   pipeline.get('visits:total').get(`visits:${day}`).hgetall('views')
   const [total, today, views] = (await pipeline.exec()).slice(-3)
@@ -20,10 +16,10 @@ async function run({ visit, view } = {}) {
 }
 
 async function record(request) {
-  const { visit, view } = await request.json().catch(() => ({}))
+  const { visit, returning, view } = await request.json().catch(() => ({}))
   const validView = typeof view === 'string' && /^[\w-]{1,40}$/.test(view)
   if (visit !== true && !validView) return json({ error: 'bad request' }, 400)
-  return run({ visit: visit === true, view: validView ? view : null })
+  return run({ visit: visit === true, returning: returning === true, view: validView ? view : null })
 }
 
 export default {

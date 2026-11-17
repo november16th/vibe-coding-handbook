@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration, useLoca
 import Home from './pages/Home'
 import Detail from './pages/Detail'
 import Tutorial from './pages/Tutorial'
+import Admin from './pages/Admin'
 import { SHOW_TUTORIAL } from './tutorial'
 import './styles.css'
 
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Home /> },
       { path: '/term/:id', element: <Detail /> },
+      // 관리자용 사용 지표. 링크는 어디에도 없고, 비밀번호가 있어야 숫자가 보인다
+      { path: '/admin', element: <Admin /> },
       // 튜토리얼을 숨긴 동안에는 주소로 들어와도 홈으로 보낸다
       { path: '/tutorial/:course', element: SHOW_TUTORIAL ? <Tutorial /> : <Navigate to="/" replace /> },
       { path: '/tutorial/:course/:step', element: SHOW_TUTORIAL ? <Tutorial /> : <Navigate to="/" replace /> },

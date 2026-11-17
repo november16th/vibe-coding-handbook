@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { GROUPS, searchTerms } from '../terms'
 import { Stage, Icon, TutorialDemo } from '../demos/parts'
 import { TUTORIALS, SHOW_TUTORIAL } from '../tutorial'
 import LockNoticeModal from '../components/LockNoticeModal'
-import { useStats } from '../stats'
+import { useStats, track } from '../stats'
 
 // 카드 오른쪽 위: 조회수만 (숫자를 못 불러오면 아무것도 안 보인다)
 const ViewCount = ({ n }) => (n == null ? null : <span className="card-no mono">조회수 {n.toLocaleString()}</span>)
@@ -106,6 +106,20 @@ function useActiveGroup() {
   return active
 }
 
+// 타이핑을 1.5초 멈추면 그 검색어를 한 번 기록한다. 같은 검색어를 연달아 기록하지는 않는다
+function useSearchTracking(q, count) {
+  const last = useRef('')
+  useEffect(() => {
+    const query = q.trim()
+    if (!query || query === last.current) return
+    const id = setTimeout(() => {
+      last.current = query
+      track({ search: query, hits: count })
+    }, 1500)
+    return () => clearTimeout(id)
+  }, [q, count])
+}
+
 export default function Home() {
   const active = useActiveGroup()
   const stats = useStats()
@@ -113,6 +127,7 @@ export default function Home() {
   const activeGroup = GROUPS.find((g) => g.id === active)
   const [q, setQ] = useState('')
   const hits = q.trim() ? searchTerms(q) : null
+  useSearchTracking(q, hits?.length)
 
   const go = (id) => (e) => {
     e.preventDefault()

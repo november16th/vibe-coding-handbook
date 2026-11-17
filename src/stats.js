@@ -36,7 +36,10 @@ let visitInFlight = false
 async function sync(view) {
   const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' })
   // 같은 브라우저는 한국 날짜 기준 하루 한 번만 방문으로 센다
-  const visit = read('visited') !== day && !visitInFlight
+  const lastVisit = read('visited')
+  const visit = lastVisit !== day && !visitInFlight
+  // 전에 다른 날 와본 적이 있으면 다시 온 방문자
+  const returning = visit && Boolean(lastVisit)
   if (!visit && !view) {
     const res = await fetch(API)
     return res.ok ? res.json() : null
@@ -47,7 +50,7 @@ async function sync(view) {
     const res = await fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ visit, view }),
+      body: JSON.stringify({ visit, returning, view }),
     })
     if (!res.ok) return null
     if (visit) write('visited', day)
@@ -72,3 +75,19 @@ export function useStats(view) {
   }, [view])
   return stats
 }
+
+// 관리자만 보는 사용 신호를 보낸다 (요청 문장 복사, 검색어). 실패해도 화면에는 영향이 없다
+export function track(event) {
+  if (!ENABLED) return
+  const body = JSON.stringify(event)
+  try {
+    // 페이지를 떠나는 중에도 전송되도록 sendBeacon을 먼저 쓴다. 서버는 내용을 JSON으로 읽는다
+    if (navigator.sendBeacon?.('/api/track', new Blob([body], { type: 'text/plain' }))) return
+  } catch {
+    // sendBeacon이 막힌 브라우저는 아래 fetch로
+  }
+  fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {})
+}
+
+// 지금 페이지 주소로 복사 위치 이름을 만든다. /term/modal → term-modal, / → home
+export const pageKey = (pathname) => pathname.replace(/^\/|\/$/g, '').replace(/\//g, '-').slice(0, 60) || 'home'

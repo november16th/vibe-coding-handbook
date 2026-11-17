@@ -1,9 +1,13 @@
 import { useCallback, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { useLocation } from 'react-router-dom'
+import { track, pageKey } from '../stats'
 
 export function PromptBox({ text, label = 'AI에게 이렇게 말해보세요', tone }) {
   const [copied, setCopied] = useState(false)
+  const { pathname } = useLocation()
   const copy = async () => {
+    track({ copy: pageKey(pathname) })
     try {
       await navigator.clipboard.writeText(text)
     } catch {
