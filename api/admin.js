@@ -29,6 +29,16 @@ const top = (hash, n = 30) =>
     .sort((a, b) => b.count - a.count)
     .slice(0, n)
 
+// Upstash가 JSON 문자열을 객체로 바꿔 주기도 하고 안 바꿔 주기도 해서 둘 다 받는다
+const parseJson = (v) => {
+  if (v && typeof v === 'object') return v
+  try {
+    return JSON.parse(v)
+  } catch {
+    return null
+  }
+}
+
 // 오늘부터 거꾸로 DAYS일의 한국 날짜
 const recentDays = () => Array.from({ length: DAYS }, (_, i) => koreaDate(new Date(Date.now() - i * 86400000)))
 
@@ -37,7 +47,10 @@ async function report() {
   const pipeline = redis.pipeline()
   pipeline.hgetall('copies').hgetall('searches').hgetall('searches:miss').hgetall('views')
   for (const d of days) pipeline.get(`visits:${d}`).get(`returning:${d}`).get(`copies:${d}`).get(`searches:${d}`)
-  const [copies, searches, misses, views, ...daily] = await pipeline.exec()
+  pipeline.lrange('searches:recent', 0, 19)
+  const [copies, searches, misses, views, ...rest] = await pipeline.exec()
+  const daily = rest.slice(0, -1)
+  const recent = rest.at(-1)
 
   return json({
     daily: days.map((day, i) => {
@@ -48,6 +61,7 @@ async function report() {
     searches: top(searches),
     misses: top(misses),
     views: top(views),
+    recent: (recent ?? []).map(parseJson).filter(Boolean),
     // 한 번이라도 본 페이지 이름 전부. 아직 아무도 안 본 용어를 찾는 데 쓴다
     viewed: Object.keys(views ?? {}).filter((k) => Number(views[k]) > 0),
   })

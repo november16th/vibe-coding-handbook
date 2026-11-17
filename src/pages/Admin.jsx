@@ -55,6 +55,29 @@ function Ranking({ title, hint, rows, name = (k) => k }) {
   )
 }
 
+// 가장 최근 검색 20개. 시간순(최신이 위)
+function Recent({ rows = [] }) {
+  return (
+    <section className="admin-card">
+      <h2>최근 검색어</h2>
+      <p className="admin-hint">가장 최근 20개, 최신이 위예요. 오른쪽은 검색 결과 개수예요</p>
+      {rows.length ? (
+        <ul className="admin-rank admin-recent">
+          {rows.map((r, i) => (
+            <li key={r.at + i}>
+              <span>{r.q}</span>
+              <em className="mono">{new Date(r.at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</em>
+              <b className={'mono' + (r.hits === 0 ? ' admin-miss' : '')}>{r.hits === 0 ? '없음' : `${r.hits}개`}</b>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="admin-empty">아직 기록이 없어요.</p>
+      )}
+    </section>
+  )
+}
+
 // 조회수가 0인 용어. 이름을 바꾸거나 별명을 더하거나 뺄지 고민할 후보
 function Unseen({ viewed = [] }) {
   const seen = new Set(viewed)
@@ -210,6 +233,7 @@ export default function Admin() {
               <Ranking title="결과가 없던 검색어" hint="사이트에 없는 것. 다음에 추가할 용어 후보예요" rows={data.misses} />
               <Ranking title="많이 본 페이지" hint="카드 조회수 (화면에 보이는 숫자와 같아요)" rows={data.views} name={placeName} />
               <Unseen viewed={data.viewed} />
+              <Recent rows={data.recent} />
             </div>
           </>
         )}
