@@ -1227,6 +1227,8 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 }
 @media (max-width: 640px) {
   .topbar-in { padding: 10px 16px; }
+  /* 모바일 메인 화면 헤더는 다른 페이지처럼 로고만. 검색, 섹션 탭, 제작자·방문자 줄은 숨긴다 */
+  .topbar .group-tabs, .topbar .search, .topbar .site-meta, .topbar .sub-tabs { display: none; }
   .site-intro { display: block; }
   .site-tagline { display: none; }
   .site-meta { padding: 0 16px 8px; }
