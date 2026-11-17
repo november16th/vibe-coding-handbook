@@ -59,7 +59,7 @@ export default function Tutorial() {
 
       <main className="wrap detail" key={`${c}-${n}`}>
         <motion.div className="detail-head" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          {/* 좋아요·의견은 코스 단위 (조회수와 같은 기준) */}
+          {/* 용어 상세처럼 맨 위 줄 오른쪽 끝에 조회수·좋아요·의견. 좋아요·의견은 코스 단위 (조회수와 같은 기준) */}
           <div className="detail-top">
             {n > 1 && (
               <Link to={`/tutorial/${c}/${n - 1}`} className="back">
@@ -67,6 +67,11 @@ export default function Tutorial() {
               </Link>
             )}
             <PageMeta stats={stats} id={`tutorial-${c}`} title={tut.title} />
+          </div>
+          <div className="tut-head">
+            <span className="eyebrow">튜토리얼</span>
+            <h1>{tut.title}</h1>
+            <p>{tut.subtitle}</p>
           </div>
           {tut.prev && n === 1 && prevTut && !prevTut.locked && (
             <div className="tut-prev-course">
@@ -128,7 +133,7 @@ export default function Tutorial() {
               </Link>
             ))}
           </nav>
-          <TermIntro term={term} />
+          <TermIntro term={term} level={2} />
         </motion.div>
 
         <TermBody term={term} showPrompt={!hasTask} />

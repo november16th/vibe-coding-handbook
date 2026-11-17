@@ -39,10 +39,12 @@ export function PageMeta({ stats, id, title }) {
 }
 
 // 용어 이름·설명 (상세 화면과 튜토리얼이 함께 쓴다)
-export function TermIntro({ term }) {
+// level: 튜토리얼에서는 코스 이름이 h1이라 용어 이름을 h2로 둔다 (보이는 크기는 같다)
+export function TermIntro({ term, level = 1 }) {
+  const Heading = level === 2 ? 'h2' : 'h1'
   return (
     <>
-      <h1>{term.en}</h1>
+      <Heading className="term-title">{term.en}</Heading>
       <p className="detail-ko">{term.ko}</p>
       {term.aka.length > 0 && <p className="detail-aka">{term.aka.map((a) => `'${a}'`).join(', ')}(으)로도 불려요</p>}
       <p className="detail-desc">{term.desc}</p>
