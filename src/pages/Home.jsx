@@ -7,8 +7,14 @@ import { TUTORIALS, SHOW_TUTORIAL } from '../tutorial'
 import LockNoticeModal from '../components/LockNoticeModal'
 import { useStats, track } from '../stats'
 
-// 카드 오른쪽 위: 조회수만 (숫자를 못 불러오면 아무것도 안 보인다)
-const ViewCount = ({ n }) => (n == null ? null : <span className="card-no mono">조회수 {n.toLocaleString()}</span>)
+// 카드 오른쪽 위: 눈 아이콘 + 조회수 (숫자를 못 불러오면 아무것도 안 보인다)
+const ViewCount = ({ n }) =>
+  n == null ? null : (
+    <span className="card-no mono" title="조회수" aria-label={`조회수 ${n.toLocaleString()}`}>
+      <Icon n="eye" size={12} />
+      {n.toLocaleString()}
+    </span>
+  )
 
 export function TermCard({ term, alias, views }) {
   const { Demo } = term
