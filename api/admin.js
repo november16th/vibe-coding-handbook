@@ -48,6 +48,8 @@ async function report() {
     searches: top(searches),
     misses: top(misses),
     views: top(views),
+    // 한 번이라도 본 페이지 이름 전부. 아직 아무도 안 본 용어를 찾는 데 쓴다
+    viewed: Object.keys(views ?? {}).filter((k) => Number(views[k]) > 0),
   })
 }
 

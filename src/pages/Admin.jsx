@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getTerm } from '../terms'
+import { getTerm, TERMS } from '../terms'
 import { TUTORIALS } from '../tutorial'
 import TrendChart from '../components/TrendChart'
 
@@ -50,6 +50,32 @@ function Ranking({ title, hint, rows, name = (k) => k }) {
         </ol>
       ) : (
         <p className="admin-empty">아직 기록이 없어요.</p>
+      )}
+    </section>
+  )
+}
+
+// 조회수가 0인 용어. 이름을 바꾸거나 별명을 더하거나 뺄지 고민할 후보
+function Unseen({ viewed = [] }) {
+  const seen = new Set(viewed)
+  const rows = TERMS.filter((t) => !seen.has(t.id))
+  return (
+    <section className="admin-card">
+      <h2>
+        아직 아무도 안 본 용어 <span className="mono admin-count">{rows.length}</span>
+      </h2>
+      <p className="admin-hint">전체 {TERMS.length}개 중 조회수가 0인 용어예요. 이름을 쉽게 바꾸거나 별명을 더할 후보예요</p>
+      {rows.length ? (
+        <ul className="admin-rank admin-unseen">
+          {rows.map((t) => (
+            <li key={t.id}>
+              <span>{t.en}</span>
+              <em>{t.section.title}</em>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="admin-empty">모든 용어가 한 번 이상 조회됐어요.</p>
       )}
     </section>
   )
@@ -180,9 +206,10 @@ export default function Admin() {
 
             <div className="admin-grid">
               <Ranking title="많이 복사한 곳" hint="어느 페이지의 요청 문장을 복사해 갔는지" rows={data.copies} name={placeName} />
-              <Ranking title="결과가 없던 검색어" hint="사이트에 없는 것. 다음에 추가할 용어 후보예요" rows={data.misses} />
               <Ranking title="많이 찾은 검색어" hint="타이핑을 멈춘 뒤의 검색어만 세요" rows={data.searches} />
+              <Ranking title="결과가 없던 검색어" hint="사이트에 없는 것. 다음에 추가할 용어 후보예요" rows={data.misses} />
               <Ranking title="많이 본 페이지" hint="카드 조회수 (화면에 보이는 숫자와 같아요)" rows={data.views} name={placeName} />
+              <Unseen viewed={data.viewed} />
             </div>
           </>
         )}
