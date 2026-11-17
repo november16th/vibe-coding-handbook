@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 const API = '/api/stats'
 
@@ -89,5 +89,5 @@ export function track(event) {
   fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {})
 }
 
-// 지금 페이지 주소로 복사 위치 이름을 만든다. /term/modal → term-modal, / → home
-export const pageKey = (pathname) => pathname.replace(/^\/|\/$/g, '').replace(/\//g, '-').slice(0, 60) || 'home'
+// 복사 기록에 남길 이름. 용어 페이지는 'Hero Section'처럼 화면의 제목 그대로, 튜토리얼은 '코스 이름 N단계'
+export const CopyName = createContext(null)

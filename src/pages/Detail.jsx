@@ -7,7 +7,7 @@ import { PromptBox } from '../components/kit'
 import { PLAYGROUNDS } from '../playgrounds'
 import { GUIDES } from '../guides'
 import { TermCard } from './Home'
-import { useStats } from '../stats'
+import { useStats, CopyName } from '../stats'
 import ReadmeModal from '../components/ReadmeModal'
 
 // 상세 화면 뒤로가기 줄 오른쪽 끝의 조회수
@@ -109,7 +109,7 @@ export default function Detail() {
   const related = term.section.items.filter((x) => x !== term).slice(0, 4)
 
   return (
-    <>
+    <CopyName.Provider value={term.en}>
       <header className="topbar">
         <div className="topbar-in">
           <Link to="/" className="logo">
@@ -146,6 +146,6 @@ export default function Detail() {
           </section>
         )}
       </main>
-    </>
+    </CopyName.Provider>
   )
 }

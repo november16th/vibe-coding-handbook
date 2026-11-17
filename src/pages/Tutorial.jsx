@@ -4,7 +4,7 @@ import { getTerm } from '../terms'
 import { TUTORIALS, SHOTS } from '../tutorial'
 import { PromptBox } from '../components/kit'
 import { TermIntro, TermBody, PageViews } from './Detail'
-import { useStats } from '../stats'
+import { useStats, CopyName } from '../stats'
 
 // **굵게** 표시만 지원하는 아주 작은 변환
 const rich = (text) => text.split('**').map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))
@@ -48,7 +48,7 @@ export default function Tutorial() {
   const prevTut = TUTORIALS[c - 2]
 
   return (
-    <>
+    <CopyName.Provider value={`${tut.title} ${n}단계`}>
       <header className="topbar">
         <div className="topbar-in">
           <Link to="/" className="logo">
@@ -157,6 +157,6 @@ export default function Tutorial() {
           )}
         </nav>
       </main>
-    </>
+    </CopyName.Provider>
   )
 }
