@@ -103,7 +103,7 @@ button { font-family: inherit; }
 .card-no { position: absolute; top: 18px; right: 18px; display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--faint); background: rgba(255, 255, 255, 0.85); padding: 2px 7px; border-radius: 99px; z-index: 2; }
 
 /* ───────── 상세 ───────── */
-.detail-head { padding: 44px 0 8px; }
+.detail-head { padding: 16px 0 8px; }
 .crumb { display: block; font-size: 13px; color: var(--muted); font-weight: 600; }
 .crumb .mono { color: var(--faint); margin-left: 4px; }
 .detail-head .term-title { font-size: clamp(40px, 6vw, 62px); font-weight: 800; letter-spacing: -0.04em; margin: 8px 0 2px; line-height: 1.1; }
