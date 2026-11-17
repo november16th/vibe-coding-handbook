@@ -61,9 +61,14 @@ export default function Tutorial() {
         <motion.div className="detail-head" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           {/* 용어 상세처럼 맨 위 줄 오른쪽 끝에 조회수·좋아요·의견. 좋아요·의견은 코스 단위 (조회수와 같은 기준) */}
           <div className="detail-top">
-            {n > 1 && (
+            {/* 첫 단계는 용어 상세처럼 목록으로 돌아가는 버튼, 그다음부터는 이전 단계 */}
+            {n > 1 ? (
               <Link to={`/tutorial/${c}/${n - 1}`} className="back">
                 ← 이전 단계
+              </Link>
+            ) : (
+              <Link to="/#tutorial" className="back">
+                ← 전체 용어
               </Link>
             )}
             <PageMeta stats={stats} id={`tutorial-${c}`} title={tut.title} />
