@@ -77,9 +77,16 @@ export default function Admin() {
       .then(async (res) => {
         if (!alive) return
         if (res.status === 401) {
+          const { remaining } = await res.json().catch(() => ({}))
           save('')
           setToken('')
-          setError('비밀번호가 맞지 않아요.')
+          setError(remaining != null ? `비밀번호가 맞지 않아요. ${remaining}번 더 틀리면 1시간 동안 막혀요.` : '비밀번호가 맞지 않아요.')
+        } else if (res.status === 429) {
+          const { retryAfter } = await res.json().catch(() => ({}))
+          save('')
+          setToken('')
+          const min = retryAfter > 0 ? Math.ceil(retryAfter / 60) : 60
+          setError(`비밀번호를 5번 틀려서 잠겼어요. 약 ${min}분 뒤에 다시 시도해 주세요.`)
         } else if (res.status === 503) setError('Vercel 환경변수 ADMIN_TOKEN이 아직 설정되지 않았어요.')
         else if (!res.ok || !res.headers.get('content-type')?.includes('json')) setError('숫자를 불러오지 못했어요. 배포된 사이트에서 열어주세요 (npm run dev에는 api 함수가 없어요).')
         else setData(await res.json())

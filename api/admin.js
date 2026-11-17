@@ -1,10 +1,20 @@
-import { timingSafeEqual } from 'node:crypto'
+import { createHash, timingSafeEqual } from 'node:crypto'
 import { redis, koreaDate, json } from './_lib.js'
 
 // 관리자만 보는 사용 지표. Vercel 환경변수 ADMIN_TOKEN과 같은 비밀번호를
 // Authorization: Bearer <비밀번호> 로 보내야 열린다.
+// 같은 곳(IP)에서 비밀번호를 5번 틀리면 1시간 동안 맞는 비밀번호로도 열리지 않는다.
 
 const DAYS = 14
+const MAX_FAILS = 5
+const LOCK_SECONDS = 60 * 60
+
+// 접속한 곳의 IP. Vercel이 x-forwarded-for 맨 앞에 실제 IP를 넣어 준다.
+// IP를 그대로 저장하지 않도록 해시로 바꿔 키 이름에만 쓴다
+const clientKey = (request) => {
+  const ip = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
+  return `admin:fail:${createHash('sha256').update(ip).digest('hex').slice(0, 32)}`
+}
 
 const sameToken = (given, expected) => {
   const a = Buffer.from(given)
@@ -41,13 +51,26 @@ async function report() {
   })
 }
 
-export default {
-  fetch(request) {
-    const expected = process.env.ADMIN_TOKEN
-    if (!expected) return json({ error: 'ADMIN_TOKEN is not set' }, 503)
-    const given = (request.headers.get('authorization') ?? '').replace(/^Bearer /, '')
-    if (!sameToken(given, expected)) return json({ error: 'unauthorized' }, 401)
-    if (request.method === 'GET') return report()
-    return json({ error: 'method not allowed' }, 405)
-  },
+async function handle(request) {
+  const expected = process.env.ADMIN_TOKEN
+  if (!expected) return json({ error: 'ADMIN_TOKEN is not set' }, 503)
+
+  const key = clientKey(request)
+  const fails = Number((await redis.get(key)) ?? 0)
+  if (fails >= MAX_FAILS) return json({ error: 'locked', retryAfter: await redis.ttl(key) }, 429)
+
+  const given = (request.headers.get('authorization') ?? '').replace(/^Bearer /, '')
+  if (!sameToken(given, expected)) {
+    const count = await redis.incr(key)
+    // 첫 실패 때부터 1시간을 잰다. 그 안에 5번 틀리면 남은 시간 동안 막힌다
+    if (count === 1) await redis.expire(key, LOCK_SECONDS)
+    if (count >= MAX_FAILS) return json({ error: 'locked', retryAfter: await redis.ttl(key) }, 429)
+    return json({ error: 'unauthorized', remaining: MAX_FAILS - count }, 401)
+  }
+
+  if (fails) await redis.del(key)
+  if (request.method === 'GET') return report()
+  return json({ error: 'method not allowed' }, 405)
 }
+
+export default { fetch: handle }
