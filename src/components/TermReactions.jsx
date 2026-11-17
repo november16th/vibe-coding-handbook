@@ -33,9 +33,9 @@ const writeLiked = (term, on) => {
   }
 }
 
-function CommentModal({ open, term, title, onClose }) {
+function CommentModal({ open, term, title, onClose, onSent }) {
   const [text, setText] = useState('')
-  const [state, setState] = useState('edit') // edit | sending | sent | error
+  const [state, setState] = useState('edit') // edit | sending | error
   const boxRef = useRef(null)
 
   useEffect(() => {
@@ -60,8 +60,10 @@ function CommentModal({ open, term, title, onClose }) {
     setState('sending')
     try {
       await postFeedback({ term, comment })
-      setState('sent')
+      // 보내지면 창은 바로 닫고 위쪽 알림으로만 알린다
+      onSent()
     } catch {
+      // 실패하면 창을 그대로 두어 쓴 내용이 남게 한다
       setState('error')
     }
   }
@@ -74,32 +76,20 @@ function CommentModal({ open, term, title, onClose }) {
             <span className="lock-notice-icon">
               <Svg d={BUBBLE} />
             </span>
-            {state === 'sent' ? (
-              <>
-                <h2 id="comment-title">의견 고마워요!</h2>
-                <p>보내주신 내용은 설명을 고칠 때 참고할게요.</p>
-                <div className="lock-notice-btns">
-                  <button className="btn" onClick={onClose}>
-                    닫기
-                  </button>
-                </div>
-              </>
-            ) : (
-              <form onSubmit={submit}>
-                <h2 id="comment-title">{title}에 의견 남기기</h2>
-                <p>좋았던 점, 어려웠던 점, 더 있으면 하는 내용을 자유롭게 남겨주세요.</p>
-                <textarea className="cm-text" value={text} onChange={(e) => setText(e.target.value)} placeholder="예: 예시가 하나 더 있으면 좋겠어요" maxLength={500} rows={4} />
-                {state === 'error' && <p className="cm-error">보내지 못했어요. 잠시 뒤에 다시 시도해 주세요.</p>}
-                <div className="lock-notice-btns cm-btns">
-                  <button type="button" className="btn cm-skip" onClick={onClose}>
-                    닫기
-                  </button>
-                  <button className="btn" disabled={!text.trim() || state === 'sending'}>
-                    {state === 'sending' ? '보내는 중' : '보내기'}
-                  </button>
-                </div>
-              </form>
-            )}
+            <form onSubmit={submit}>
+              <h2 id="comment-title">{title}에 의견 남기기</h2>
+              <p>좋았던 점, 어려웠던 점, 더 있으면 하는 내용을 자유롭게 남겨주세요.</p>
+              <textarea className="cm-text" value={text} onChange={(e) => setText(e.target.value)} placeholder="예: 예시가 하나 더 있으면 좋겠어요" maxLength={500} rows={4} />
+              {state === 'error' && <p className="cm-error">보내지 못했어요. 잠시 뒤에 다시 시도해 주세요.</p>}
+              <div className="lock-notice-btns cm-btns">
+                <button type="button" className="btn cm-skip" onClick={onClose}>
+                  닫기
+                </button>
+                <button className="btn" disabled={!text.trim() || state === 'sending'}>
+                  {state === 'sending' ? '보내는 중' : '보내기'}
+                </button>
+              </div>
+            </form>
           </motion.div>
         </motion.div>
       )}
@@ -113,7 +103,19 @@ export default function TermReactions({ term, title, likes }) {
   // 서버에서 받은 숫자. 누르면 바뀐 숫자로 덮어쓴다. 못 불러왔으면 null이고 숫자 없이 하트만 보인다
   const [count, setCount] = useState(likes ?? null)
   const [open, setOpen] = useState(false)
+  const [toast, setToast] = useState(false)
   const close = useCallback(() => setOpen(false), [])
+  const sent = useCallback(() => {
+    setOpen(false)
+    setToast(true)
+  }, [])
+
+  // 알림은 2초 뒤 저절로 사라진다
+  useEffect(() => {
+    if (!toast) return
+    const id = setTimeout(() => setToast(false), 2000)
+    return () => clearTimeout(id)
+  }, [toast])
 
   useEffect(() => setLiked(readLiked(term)), [term])
   useEffect(() => setCount(likes ?? null), [likes])
@@ -145,7 +147,17 @@ export default function TermReactions({ term, title, likes }) {
       <motion.button type="button" className="react-pill icon" onClick={() => setOpen(true)} aria-label="의견 보내기" title="의견 보내기" whileTap={{ scale: 0.9 }}>
         <Svg d={BUBBLE} />
       </motion.button>
-      <CommentModal open={open} term={term} title={title} onClose={close} />
+      <CommentModal open={open} term={term} title={title} onClose={close} onSent={sent} />
+      {createPortal(
+        <AnimatePresence>
+          {toast && (
+            <motion.div className="toast" role="status" initial={{ opacity: 0, y: -12, x: '-50%' }} animate={{ opacity: 1, y: 0, x: '-50%' }} exit={{ opacity: 0, y: -12, x: '-50%' }} transition={{ duration: 0.2 }}>
+              의견을 보냈어요. 고마워요!
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </div>
   )
 }
