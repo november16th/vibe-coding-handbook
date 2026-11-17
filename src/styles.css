@@ -1227,7 +1227,6 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 }
 @media (max-width: 640px) {
   .topbar-in { padding: 10px 16px; }
-  .topbar-in:has(.group-tabs) .logo { display: none; }
   .site-intro { display: block; }
   .site-tagline { display: none; }
   .site-meta { padding: 0 16px 8px; }
