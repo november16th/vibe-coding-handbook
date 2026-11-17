@@ -26,22 +26,23 @@ const DEMO_POPUPS = {
   readme: { Popup: ReadmeModal, hint: '카드를 누르면 이 사이트의 README.md 전체를 볼 수 있어요' },
 }
 
-// 용어 이름·설명 (상세 화면과 튜토리얼이 함께 쓴다). 좋아요·의견 버튼은 상세 화면에서만
-export function TermIntro({ term, reactions = false, likes }) {
-  const aka = term.aka.length > 0 && `${term.aka.map((a) => `'${a}'`).join(', ')}(으)로도 불려요`
+// 맨 위 줄 오른쪽 끝: 조회수 · [♡ 숫자] · [말풍선]. 용어 상세와 튜토리얼이 함께 쓴다
+export function PageMeta({ stats, id, title }) {
+  return (
+    <div className="detail-meta">
+      <PageViews stats={stats} id={id} />
+      <TermReactions term={id} title={title} likes={stats ? (stats.likes?.[id] ?? 0) : undefined} />
+    </div>
+  )
+}
+
+// 용어 이름·설명 (상세 화면과 튜토리얼이 함께 쓴다)
+export function TermIntro({ term }) {
   return (
     <>
       <h1>{term.en}</h1>
       <p className="detail-ko">{term.ko}</p>
-      {reactions ? (
-        // 왼쪽은 다른 이름, 오른쪽 끝은 좋아요·의견. 다른 이름이 없어도 버튼 줄은 남긴다
-        <div className="detail-aka-row">
-          {aka ? <p className="detail-aka">{aka}</p> : <span />}
-          <TermReactions term={term.id} title={term.en} likes={likes} />
-        </div>
-      ) : (
-        aka && <p className="detail-aka">{aka}</p>
-      )}
+      {term.aka.length > 0 && <p className="detail-aka">{term.aka.map((a) => `'${a}'`).join(', ')}(으)로도 불려요</p>}
       <p className="detail-desc">{term.desc}</p>
     </>
   )
@@ -134,12 +135,12 @@ export default function Detail() {
             <Link to={`/#${term.section.id}`} className="back">
               ← 전체 용어
             </Link>
-            <PageViews stats={stats} id={term.id} />
+            <PageMeta stats={stats} id={term.id} title={term.en} />
           </div>
           <span className="crumb">
             {term.group.title} · {term.section.title} <span className="mono">{term.no}</span>
           </span>
-          <TermIntro term={term} reactions likes={stats ? (stats.likes?.[term.id] ?? 0) : undefined} />
+          <TermIntro term={term} />
         </motion.div>
 
         <TermBody term={term} />

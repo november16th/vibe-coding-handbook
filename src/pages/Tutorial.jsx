@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { getTerm } from '../terms'
 import { TUTORIALS, SHOTS } from '../tutorial'
 import { PromptBox } from '../components/kit'
-import { TermIntro, TermBody, PageViews } from './Detail'
+import { TermIntro, TermBody, PageMeta } from './Detail'
 import { useStats, CopyName } from '../stats'
 
 // **굵게** 표시만 지원하는 아주 작은 변환
@@ -59,16 +59,15 @@ export default function Tutorial() {
 
       <main className="wrap detail" key={`${c}-${n}`}>
         <motion.div className="detail-head" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-          {(n > 1 || stats) && (
-            <div className="detail-top">
-              {n > 1 && (
-                <Link to={`/tutorial/${c}/${n - 1}`} className="back">
-                  ← 이전 단계
-                </Link>
-              )}
-              <PageViews stats={stats} id={`tutorial-${c}`} />
-            </div>
-          )}
+          {/* 좋아요·의견은 코스 단위 (조회수와 같은 기준) */}
+          <div className="detail-top">
+            {n > 1 && (
+              <Link to={`/tutorial/${c}/${n - 1}`} className="back">
+                ← 이전 단계
+              </Link>
+            )}
+            <PageMeta stats={stats} id={`tutorial-${c}`} title={tut.title} />
+          </div>
           {tut.prev && n === 1 && prevTut && !prevTut.locked && (
             <div className="tut-prev-course">
               <p>

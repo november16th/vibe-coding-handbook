@@ -2035,14 +2035,15 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .admin-count { font-size: 13px; color: var(--faint); margin-left: 4px; }
 
 /* ───────── 상세 페이지 좋아요 · 의견 ───────── */
-.detail-aka-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: -12px 0 12px; }
-.detail-aka-row .detail-aka { margin: 0; flex: 1; min-width: 0; }
-.react { display: flex; gap: 6px; flex-shrink: 0; }
-.react-pill { display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); color: var(--muted); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s; }
-.react-pill.icon { width: 32px; padding: 0; justify-content: center; }
-.react-pill:hover { color: var(--ink); border-color: #ddd7ca; }
-.react-pill.on { color: var(--acc); border-color: #ffcfb8; background: var(--acc-soft); }
-.react-pill:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+/* 맨 위 줄 오른쪽 끝: 조회수 · 좋아요 · 의견. 테두리·배경 없이 아이콘과 숫자만 */
+.detail-meta { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.detail-meta .page-views { margin-left: 0; }
+.react { display: flex; align-items: center; gap: 2px; }
+.react-pill { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 6px; border: 0; border-radius: 8px; background: none; color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
+.react-pill.icon { padding: 0 5px; }
+.react-pill:hover { color: var(--ink); }
+.react-pill.on { color: var(--acc); }
+.react-pill:focus-visible { outline: 2px solid var(--acc); outline-offset: 0; }
 .react-ic { display: inline-flex; }
 
 /* 의견 입력 창: 잠금 안내 창과 같은 틀 */
